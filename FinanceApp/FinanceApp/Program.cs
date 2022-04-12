@@ -1,5 +1,6 @@
 using FinanceApp.Data;
 using FinanceApp.Models;
+using FinanceApp.Repository;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
@@ -9,12 +10,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+//TODO LATER
+//builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+//    .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddIdentityServer()
     .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
@@ -23,7 +26,14 @@ builder.Services.AddAuthentication()
     .AddIdentityServerJwt();
 
 builder.Services.AddControllersWithViews();
+
+//CORS
+builder.Services.AddCors();
+
 builder.Services.AddRazorPages();
+
+builder.Services.AddTransient<ICardRepository, CardRepository>();
+builder.Services.AddTransient<ICardRepository, CardRepository>();
 
 var app = builder.Build();
 
@@ -38,13 +48,15 @@ else
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
+app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+
 app.UseAuthentication();
 app.UseIdentityServer();
-app.UseAuthorization();
+//app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",

@@ -8,6 +8,8 @@ namespace FinanceApp.Data
 {
     public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
     {
+        public DbSet<Card> cards { get; set; }
+        public DbSet<Transaction> transactions { get; set; }
         public ApplicationDbContext(DbContextOptions options, IOptions<OperationalStoreOptions> operationalStoreOptions)
             : base(options, operationalStoreOptions)
         {
