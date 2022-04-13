@@ -4,7 +4,10 @@ namespace FinanceApp.Repository
 {
     public interface ICardRepository
     {
-        public List<Card> GetAllCards();
-        public Card GetCardById(int Id);
+        Task <IEnumerable<Card>> GetAllCards();
+        Task <Card> GetCardById(int Id);
+        Task<Card> Create(Card card);
+        Task Update(Card card);
+        Task Delete(int Id);
     }
 }

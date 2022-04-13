@@ -9,5 +9,6 @@ namespace FinanceApp.Models
         public DateTime DateOfTransaction { get; set; }
         public ShopCategory Category { get; set; }
         public string Description { get; set; }
+        public int CardId { get; set; }
     }
 }
