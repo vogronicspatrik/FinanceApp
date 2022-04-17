@@ -10,6 +10,7 @@ namespace FinanceApp.Data
     {
         public DbSet<Card> cards { get; set; }
         public DbSet<Transaction> transactions { get; set; }
+        public DbSet<Stock> stocks { get; set; }
         public ApplicationDbContext(DbContextOptions options, IOptions<OperationalStoreOptions> operationalStoreOptions)
             : base(options, operationalStoreOptions)
         {

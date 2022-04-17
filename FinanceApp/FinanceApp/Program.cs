@@ -33,7 +33,7 @@ builder.Services.AddCors();
 builder.Services.AddRazorPages();
 
 builder.Services.AddTransient<ICardRepository, CardRepository>();
-builder.Services.AddTransient<ICardRepository, CardRepository>();
+builder.Services.AddTransient<IStockRepository, StockRepository>();
 
 var app = builder.Build();
 
