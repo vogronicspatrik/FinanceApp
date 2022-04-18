@@ -21,7 +21,8 @@ namespace FinanceApp.Controllers
         [HttpGet]
         public async Task<IEnumerable<Transaction>> GetTransactions()
         {
-            return await _transactionRepository.GetAllCards();
+            return await _transactionRepository.GetAllTransactions();
         }
 
+    }
 }

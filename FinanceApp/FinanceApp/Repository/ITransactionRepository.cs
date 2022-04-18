@@ -11,5 +11,6 @@ namespace FinanceApp.Repository
         Task<Transaction> Create(Transaction transaction);
         Task Update(Transaction transaction);
         Task Delete(int Id);
+        Task<IEnumerable<Transaction>> GetLastFiveTransaction(int Id);
     }
 }
