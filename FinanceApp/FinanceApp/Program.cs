@@ -35,6 +35,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddTransient<IWalletRepository, WalletRepository>();
 builder.Services.AddTransient<ITransactionRepository, TransactionRepository>();
 builder.Services.AddTransient<IStockRepository, StockRepository>();
+builder.Services.AddTransient<ICategoryRepository, CategoryRepository>();
 
 var app = builder.Build();
 
