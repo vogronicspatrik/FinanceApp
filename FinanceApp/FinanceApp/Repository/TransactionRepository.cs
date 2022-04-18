@@ -46,7 +46,7 @@ namespace FinanceApp.Repository
 
         public async  Task<IEnumerable<Transaction>> GetLastFiveTransaction(int Id)
         {
-            var transactions = GetAllTransactions().Result.Where(t => t.CardId == Id).OrderBy(t => t.DateOfTransaction);
+            var transactions = GetAllTransactions().Result.Where(t => t.WalletId == Id).OrderBy(t => t.DateOfTransaction);
             var lastFive = transactions.Skip(Math.Max(0, transactions.Count()-5));
             return lastFive;
         }
