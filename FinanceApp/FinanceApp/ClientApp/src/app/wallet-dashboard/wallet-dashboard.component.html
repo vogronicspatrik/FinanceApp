@@ -1,0 +1,5 @@
+<app-header [text]="'Wallets'"></app-header>
+<app-wallet *ngFor="let wallet of wallets" [wallet]="wallet"></app-wallet>
+
+<app-header [text]="'Add'"></app-header>
+<app-add-wallet (addNewWallet)="addNewWallet($event)"></app-add-wallet>

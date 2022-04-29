@@ -2,7 +2,7 @@
 {
     public enum Currency
     {
-        EUR,
-        HUF
+        EUR = 0,
+        HUF = 1
     }
 }

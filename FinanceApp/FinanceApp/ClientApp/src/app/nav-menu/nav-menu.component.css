@@ -1,18 +1,31 @@
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
+.navbar {
+  padding: 15px 10px;
+  background: #5e93a5;
+  border: none;
+  border-radius: 0;
+  margin-bottom: 10px;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+  min-height: 70px;
+  z-index: 150;
 }
 
-html {
-  font-size: 14px;
+.navbar-btn {
+  box-shadow: none;
+  outline: none !important;
+  border: none;
+  background: #19647E;
 }
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
+
+.dropdown-menu {
+  background-clip: unset;
+  border: none;
+  background: #5e93a5;
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    position: fixed;
+    width: 100%;
+    box-shadow: none;
   }
-}
-
-.box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
 }

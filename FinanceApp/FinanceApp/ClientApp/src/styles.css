@@ -1,16 +1,54 @@
-/* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
-/* Provide sufficient contrast against white background */
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Poppins, "Helvetica Neue", sans-serif;
+  background: #e8f0f2;
+}
+
 a {
-  color: #0366d6;
+  color: grey;
 }
 
-code {
-  color: #e01a76;
+#main-wrapper {
+  display: flex;
+  width: 100%;
+  align-items: stretch;
 }
 
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+#content {
+  width: 100%;
+  min-height: 100vh;
+  transition: all 0.3s;
+}
+
+.page-content {
+  margin: 0.5rem auto;
+  max-width: 1500px;
+}
+
+p {
+  font-family: Poppins, "Helvetica Neue", sans-serif;
+  font-size: 1.1em;
+  font-weight: 300;
+  line-height: 1.7em;
+  color: #999;
+}
+
+a,
+a:hover,
+a:focus {
+  color: inherit;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+@media (max-width: 768px) {
+  .big-margin {
+    margin-bottom: 100px;
+  }
 }

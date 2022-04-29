@@ -4,9 +4,9 @@ namespace FinanceApp.Repository
 {
     public interface ICategoryRepository
     {
-        Task<IEnumerable<Category>> GetAllCategories();
+        Task<IEnumerable<Category>> GetAllCategoriesForUser(string userId);
+        Task<Category> GetCategoryById(int id);
         Task<Category> Create(Category category);
-        Task Delete(int Id);
-        Task<Category> GetCategoryById(int Id);
+        Task<bool> Delete(int id, string userId);
     }
 }

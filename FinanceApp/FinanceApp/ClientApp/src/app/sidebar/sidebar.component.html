@@ -1,0 +1,36 @@
+<nav id="sidebar">
+  <div class="sidebar-header text-center fw-bold">
+    <a class="navbar-brand" [routerLink]="['/dashboard']" (click)="updatePage.emit('Dashboard')">
+      Finance App
+    </a>
+  </div>
+
+  <ul class="list-unstyled components">
+    <li class="nav-item" [routerLinkActive]="['active']">
+      <a [routerLink]="['/dashboard']" (click)="updatePage.emit('Dashboard')">{{'Dashboard'|translate}}</a>
+    </li>
+    <li class="nav-item" [routerLinkActive]="['active']">
+      <a [routerLink]="['/wallets']" (click)="updatePage.emit('Wallets')">{{'Wallets'|translate}}</a>
+    </li>
+    <li>
+      <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">{{'Investments'|translate}}</a>
+      <ul class="collapse list-unstyled" id="pageSubmenu">
+        <li>
+          <a [routerLink]="['/investments/stocks']" (click)="updatePage.emit('Stocks')">{{'Stocks'|translate}}</a>
+        </li>
+        <li>
+          <a [routerLink]="['/investments/crypto']" (click)="updatePage.emit('Crypto')">{{'Crypto'|translate}}</a>
+        </li>
+        <li>
+          <a [routerLink]="['/investments/bonds']" (click)="updatePage.emit('Bonds')">{{'Bonds'|translate}}</a>
+        </li>
+      </ul>
+    </li>
+    <li class="nav-item" [routerLinkActive]="['active']">
+        <a [routerLink]="['/valuable_items']" (click)="updatePage.emit('Valuable items')">{{'Valuable items'|translate}}</a>
+    </li>
+    <li class="nav-item" [routerLinkActive]="['active']">
+      <a [routerLink]="['/fix_costs']" (click)="updatePage.emit('Fix costs')">{{'Fix costs'|translate}}</a>
+    </li>
+  </ul>
+</nav>

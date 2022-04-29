@@ -1,45 +1,57 @@
-﻿using FinanceApp.Models;
+﻿using System.Security.Claims;
+using FinanceApp.Models;
 using FinanceApp.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinanceApp.Controllers
 {
-    [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
+    [Route("api/[controller]")]
     public class CategoriesController : ControllerBase
     {
         private readonly ICategoryRepository _categoryRepository;
-        public CategoriesController(ICategoryRepository categoryRepositoy)
+
+        public CategoriesController(ICategoryRepository categoryRepository)
         {
-            _categoryRepository = categoryRepositoy;
+            _categoryRepository = categoryRepository;
         }
 
         // GET: api/<CategoriesController>
         [HttpGet]
         public async Task<IEnumerable<Category>> GetCategories()
         {
-            return await _categoryRepository.GetAllCategories();
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return await _categoryRepository.GetAllCategoriesForUser(userId);
         }
 
+        // POST: api/<CategoriesController>
+        [HttpPost]
         public async Task<ActionResult<Category>> CreateCategory([FromBody] Category category)
         {
+            category.UserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var newCategory = await _categoryRepository.Create(category);
-            return CreatedAtAction(nameof(GetCategories), new { id = newCategory.Id }, newCategory);
-
+            return CreatedAtAction(nameof(GetCategories), new {id = newCategory.Id}, newCategory);
         }
 
-        // DELETE api/<CategoriesController>/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id)
+        // DELETE api/<CategoriesController>
+        [HttpDelete]
+        public async Task<ActionResult<int[]>> Delete(int[] ids)
         {
-            var categoryToDelete = await _categoryRepository.GetCategoryById(id);
-            if (categoryToDelete == null)
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var deletedCategories = new List<int>();
+            foreach (var id in ids)
             {
-                return NotFound();
+                var categoryToDelete = await _categoryRepository.GetCategoryById(id);
+
+                var success = await _categoryRepository.Delete(categoryToDelete.Id, userId);
+
+                if (success) deletedCategories.Add(id);
             }
-            await _categoryRepository.Delete(categoryToDelete.Id);
-            return NoContent();
+
+            return Ok(deletedCategories);
         }
     }
 }

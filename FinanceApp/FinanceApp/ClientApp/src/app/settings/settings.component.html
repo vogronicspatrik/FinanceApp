@@ -1,0 +1,65 @@
+<app-header [text]="'Categories'"></app-header>
+<div class="row">
+  <div class="col-lg-5">
+    <table class="table">
+      <thead>
+      <tr>
+        <th scope="col">{{'Name'|translate}}</th>
+        <th scope="col">{{'Color'|translate}}</th>
+        <th scope="col" class="text-center">
+          <button class="btn btn-danger btn-small" (click)="deleteCategories()">
+            <mat-icon class="align-middle">delete</mat-icon>
+          </button>
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let category of categories">
+        <td>{{category.name}}</td>
+        <td>{{category.color}}</td>
+        <td class="text-center">
+          <div>
+            <input class="form-check-input" type="checkbox" (change)="changeDeleteStatus(category.id)">
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-lg-7">
+    <div class="card">
+      <form #categoryForm="ngForm" (ngSubmit)="onSubmit(categoryForm)">
+        <div class="card-header d-flex d-flex justify-content-between align-items-center">
+          <h4 class="m-0">{{'New category'|translate}}</h4>
+          <button class="btn btn-success" type="submit" [disabled]="!categoryForm.form.valid">
+            <span class="fw-bold lh-1">{{'Add'|translate}}</span>
+          </button>
+        </div>
+        <div class="card-body">
+          <div class="form-group mb-4">
+            <label for="Name">{{'Name'|translate}}</label>
+            <input id="Name" name="Name" type="text" class="form-control" [(ngModel)]="category.name"
+                   #categoryName="ngModel" required minlength="2"
+                   [ngClass]="{'is-invalid': categoryName.touched && categoryName.errors}"
+            >
+            <div [hidden]="!categoryName.errors?.required" class="invalid-feedback">
+              {{'Name is required'|translate}}
+            </div>
+            <div [hidden]="!categoryName.errors?.minlength" class="invalid-feedback">
+              {{'Must be at least 2 characters'|translate}}
+            </div>
+          </div>
+          <div class="form-group mb-4">
+            <label for="Color">{{'Color'|translate}}</label>
+            <input id="Color" name="Color" type="text" class="form-control" [(ngModel)]="category.color"
+                   #categoryColor="ngModel"
+                   [disabled]="true">
+          </div>
+          <div class="color-container mx-auto">
+            <color-sketch [color]="category.color" (onChangeComplete)="onChangeColor($event)"></color-sketch>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

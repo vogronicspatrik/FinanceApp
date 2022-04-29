@@ -1,0 +1,72 @@
+<div class="card">
+  <div class="card-header d-flex d-flex justify-content-between align-items-center">
+    <h4 class="m-0">{{'New Wallet'|translate}}</h4>
+    <button class="btn btn-fix-size" [ngClass]="newWalletOpen ? 'btn-success' : 'btn-danger'"
+            (click)="newWalletOpen = !newWalletOpen">
+      <h4 class="fw-bold lh-sm my-auto">{{newWalletOpen ? '+' : '-'}}</h4>
+    </button>
+  </div>
+  <div class="card-body" *ngIf="newWalletOpen">
+    <form #walletForm="ngForm" (ngSubmit)="onSubmit(walletForm)">
+      <div class="form-group">
+        <div class="row">
+          <!-- Wallet Name -->
+          <div class="form-group mb-4 col-md-6">
+            <label for="Name">{{'Wallet Name'|translate}}<span class="text-danger">*</span></label>
+            <input id="Name" name="Name" type="text" class="form-control" [(ngModel)]="newWallet.type"
+                   #walletName="ngModel" required minlength="2" placeholder="{{'My bank account'|translate}}"
+                   [ngClass]="{'is-invalid': walletName.touched && walletName.errors}"
+            >
+            <div [hidden]="!walletName.errors?.required" class="invalid-feedback">
+              {{'Name is required'|translate}}
+            </div>
+            <div [hidden]="!walletName.errors?.minlength" class="invalid-feedback">
+              {{'Must be at least 2 characters'|translate}}
+            </div>
+          </div>
+          <!-- Wallet Location -->
+          <div class="form-group mb-4 col-md-6">
+            <label for="Location">{{'Location'|translate}}<span class="text-danger">*</span></label>
+            <input id="Location" name="Location" type="text" class="form-control" [(ngModel)]="newWallet.location"
+                   #walletLocation="ngModel" required minlength="2" placeholder="{{'My bank'|translate}}"
+                   [ngClass]="{'is-invalid': walletLocation.touched && walletLocation.errors}"
+            >
+            <div [hidden]="!walletLocation.errors?.required" class="invalid-feedback">
+              {{'Location is required'|translate}}
+            </div>
+            <div [hidden]="!walletLocation.errors?.minlength" class="invalid-feedback">
+              {{'Must be at least 2 characters'|translate}}
+            </div>
+          </div>
+          <!-- Wallet Owner -->
+          <div class="form-group mb-4 col-md-6">
+            <label for="Owner">{{'Owner'|translate}}</label>
+            <input id="Owner" name="Owner" type="text" class="form-control" [(ngModel)]="newWallet.owner"
+                   #walletOwner="ngModel"
+            >
+          </div>
+          <!-- Wallet Account Number -->
+          <div class="form-group mb-4 col-md-6">
+            <label for="AccountNumber">{{'Account number'|translate}}</label>
+            <input id="AccountNumber" name="AccountNumber" type="text" class="form-control"
+                   [(ngModel)]="newWallet.accountNumber"
+                   #walletAccountNumber="ngModel"
+            >
+          </div>
+          <!-- Add Currency Type -->
+          <div class="form-group mb-4 offset-md-3 col-md-6">
+            <label for="Currency">{{'Currency type'|translate}}</label>
+            <select id="Currency" name="Currency" class="form-select" [(ngModel)]="newWallet.currency">
+              <option *ngFor="let currency of currencyTypes | keyvalue"
+                      value="{{currency.key}}">{{currency.value}}</option>
+            </select>
+          </div>
+          <button type="submit" [disabled]="!walletForm.form.valid" class="btn btn-success offset-md-2 col-md-8">
+            {{'Add Wallet'|translate}}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+

@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using FinanceApp.Data;
 using FinanceApp.Models;
 using FinanceApp.Repository;
@@ -5,11 +6,14 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using JsonConverter = Newtonsoft.Json.JsonConverter;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionString = builder.Configuration.GetConnectionString("LocalConnection");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
@@ -25,7 +29,23 @@ builder.Services.AddIdentityServer()
 builder.Services.AddAuthentication()
     .AddIdentityServerJwt();
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+        options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+    });
+
+JsonConvert.DefaultSettings = () =>
+{
+    var settings = new JsonSerializerSettings
+    {
+        Formatting = Formatting.Indented,
+        ContractResolver = new DefaultContractResolver {NamingStrategy = new CamelCaseNamingStrategy()},
+        Converters = new List<JsonConverter>() {new Newtonsoft.Json.Converters.StringEnumConverter()}
+    };
+    return settings;
+};
 
 //CORS
 builder.Services.AddCors();
@@ -58,13 +78,14 @@ app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
 app.UseAuthentication();
 app.UseIdentityServer();
-//app.UseAuthorization();
+app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action=Index}/{id?}");
 app.MapRazorPages();
 
-app.MapFallbackToFile("index.html"); ;
+app.MapFallbackToFile("index.html");
+;
 
 app.Run();
