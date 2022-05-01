@@ -1,4 +1,6 @@
-﻿namespace FinanceApp.Models
+﻿using FinanceApp.Enums;
+
+namespace FinanceApp.Models
 {
     public class Stock
     {
@@ -6,7 +8,7 @@
         public int UserId { get; set; }
         public string Symbol { get; set; } = "";
         public DateTime PurchaseTime { get; set; }
-        public string CurrencyCode { get; set; } = "HUF";
+        public Currency CurrencyCode { get; set; } = Currency.HUF;
         public double ValueAtPurchase { get; set; }
         public int Amount { get; set; }
     }

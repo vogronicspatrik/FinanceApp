@@ -1,8 +1,6 @@
-using FinanceApp.AlphaVantageModels;
 using FinanceApp.Models;
 using FinanceApp.Repository;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace FinanceApp.Controllers
 {

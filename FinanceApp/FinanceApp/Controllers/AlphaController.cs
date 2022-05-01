@@ -1,16 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using FinanceApp.AlphaVantageModels;
 using Newtonsoft.Json;
+using FinanceApp.Enums;
 
 namespace FinanceApp.Controllers
 {
 
     /*
     Functions to support:
-    - TIME_SERIES_DAILY
-    SYMBOL_SEARCH
-    CURRENCY_EXCHANGE_RATE
-    - FX_DAILY
     DIGITAL_CURRENCY_DAILY
     */
 
@@ -59,10 +56,73 @@ namespace FinanceApp.Controllers
             return null;
         }
 
-        [HttpGet("stock/{symbol}")]
-        public async Task<ActionResult<DailyStockSeries>> Stock(string symbol)
+        public async Task<RealTimeFxItem> FxRealTime(string fromSymbol, string toSymbol)
+        {
+            string queryString = $"https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency={fromSymbol}&to_currency={toSymbol}&apikey={APIKEY}";
+            Uri uri = new Uri(queryString);
+
+            var response = await _httpClient.GetAsync(uri);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonStr = await response.Content.ReadAsStringAsync();
+                if (jsonStr != null)
+                {
+                    RealTimeFxData fxData = JsonConvert.DeserializeObject<RealTimeFxData>(jsonStr);
+                    return fxData.FxItem;
+                }
+            }
+            return null;
+        }
+
+        // Convert the price of all stock items to the given currency
+        public async Task<DailyStockSeries> AdjustStockPrice(DailyStockSeries data, Currency? currency)
+        {
+            if(currency == null)
+            {
+                return data;
+            }
+
+            string currencyStr = currency == Currency.HUF ? "HUF" : "EUR";
+            var fxData = await FxDailyData("USD", currencyStr);
+
+            if (data == null || data.TimeSeries == null || fxData == null || fxData.TimeSeries == null)
+            {
+                return data;
+            }
+
+            foreach(var item in data.TimeSeries)
+            {
+                DateTime date = item.Key;
+                double openRate = 1;
+                double lowRate = 1;
+                double highRate = 1;
+                double closeRate = 1;
+                if (fxData.TimeSeries.ContainsKey(date))
+                {
+                    openRate = fxData.TimeSeries[date].Open;
+                    lowRate = fxData.TimeSeries[date].Low;
+                    highRate = fxData.TimeSeries[date].High;
+                    closeRate = fxData.TimeSeries[date].Close;
+                }
+                data.TimeSeries[date].Open = item.Value.Open * openRate;
+                data.TimeSeries[date].Low = item.Value.Low * lowRate;
+                data.TimeSeries[date].High = item.Value.High * highRate;
+                data.TimeSeries[date].Close = item.Value.Close * closeRate;
+            }
+
+            return data;
+        }
+
+        [HttpGet("stock/{symbol}/{currency?}")]
+        public async Task<ActionResult<DailyStockSeries>> Stock(string symbol, Currency? currency)
         {
             DailyStockSeries stockData = await StockData(symbol);
+            
+            if (currency != null && stockData != null)
+            {
+                stockData = await AdjustStockPrice(stockData, currency);
+            }
 
             if(stockData != null)
             {
@@ -72,8 +132,8 @@ namespace FinanceApp.Controllers
             return BadRequest();
         }
 
-        [HttpGet("stockRange/{symbol}/{fromDate}/{toDate}")]
-        public async Task<ActionResult<DailyStockSeries>> StockRange(string symbol, DateTime fromDate, DateTime toDate)
+        [HttpGet("stockRange/{symbol}/{fromDate}/{toDate}/{currency?}")]
+        public async Task<ActionResult<DailyStockSeries>> StockRange(string symbol, DateTime fromDate, DateTime toDate, Currency? currency)
         {
             DailyStockSeries allItems = await StockData(symbol);
 
@@ -90,12 +150,18 @@ namespace FinanceApp.Controllers
                     TimeSeries = resultTimeSeries
                 };
 
+                if(currency != null)
+                {
+                    result = await AdjustStockPrice(result, currency);
+                }
+
                 return Ok(result);
             }
 
             return BadRequest();
         }
 
+        // returns historical exchange rate
         [HttpGet("fx/{fromSymbol}/{toSymbol}/{fromDate}/{toDate}")]
         public async Task<ActionResult<DailyFxSeries>> Fx(string fromSymbol, string toSymbol, DateTime fromDate, DateTime toDate)
         {
@@ -117,6 +183,19 @@ namespace FinanceApp.Controllers
                 };
 
                 return Ok(result);
+            }
+
+            return BadRequest();
+        }
+
+        // return realtime exchange rate
+        [HttpGet("fxreal/{fromSymbol}/{toSymbol}")]
+        public async Task<ActionResult<RealTimeFxItem>> RealTimeFx(string fromSymbol, string toSymbol)
+        {
+            RealTimeFxItem fxItem = await FxRealTime(fromSymbol, toSymbol);
+            if (fxItem != null)
+            {
+                return Ok(fxItem);
             }
 
             return BadRequest();
