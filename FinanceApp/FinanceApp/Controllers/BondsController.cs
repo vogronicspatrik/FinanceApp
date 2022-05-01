@@ -1,5 +1,4 @@
 ﻿using System.Security.Claims;
-using FinanceApp.Enums;
 using FinanceApp.Models;
 using FinanceApp.Repository;
 using Microsoft.AspNetCore.Authorization;
@@ -7,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FinanceApp.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class BondsController : ControllerBase

@@ -16,6 +16,8 @@ namespace FinanceApp.Data
 
         public DbSet<Stock> stocks { get; set; }
 
+        public DbSet<Bond> bonds { get; set; }
+
         public ApplicationDbContext(DbContextOptions options, IOptions<OperationalStoreOptions> operationalStoreOptions)
             : base(options, operationalStoreOptions)
         {
