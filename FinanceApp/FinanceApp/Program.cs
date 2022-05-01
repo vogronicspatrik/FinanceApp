@@ -42,7 +42,11 @@ JsonConvert.DefaultSettings = () =>
     {
         Formatting = Formatting.Indented,
         ContractResolver = new DefaultContractResolver {NamingStrategy = new CamelCaseNamingStrategy()},
-        Converters = new List<JsonConverter>() {new Newtonsoft.Json.Converters.StringEnumConverter()}
+        Converters = new List<JsonConverter>() 
+        {
+            new Newtonsoft.Json.Converters.StringEnumConverter(),
+            new Newtonsoft.Json.Converters.IsoDateTimeConverter()
+        }
     };
     return settings;
 };
@@ -56,6 +60,7 @@ builder.Services.AddTransient<IWalletRepository, WalletRepository>();
 builder.Services.AddTransient<ITransactionRepository, TransactionRepository>();
 builder.Services.AddTransient<IStockRepository, StockRepository>();
 builder.Services.AddTransient<ICategoryRepository, CategoryRepository>();
+builder.Services.AddTransient<IBondRepository, BondRepository>();
 
 var app = builder.Build();
 
