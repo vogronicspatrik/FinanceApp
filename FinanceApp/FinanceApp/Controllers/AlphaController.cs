@@ -76,7 +76,7 @@ namespace FinanceApp.Controllers
         }
 
         // Convert the price of all stock items to the given currency
-        public async Task<DailyStockSeries> AdjustStockPrice(DailyStockSeries data, Currency? currency)
+        public async Task<DailyStockSeries> ConvertStockPrice(DailyStockSeries data, Currency? currency)
         {
             if(currency == null)
             {
@@ -94,21 +94,14 @@ namespace FinanceApp.Controllers
             foreach(var item in data.TimeSeries)
             {
                 DateTime date = item.Key;
-                double openRate = 1;
-                double lowRate = 1;
-                double highRate = 1;
-                double closeRate = 1;
+                
                 if (fxData.TimeSeries.ContainsKey(date))
                 {
-                    openRate = fxData.TimeSeries[date].Open;
-                    lowRate = fxData.TimeSeries[date].Low;
-                    highRate = fxData.TimeSeries[date].High;
-                    closeRate = fxData.TimeSeries[date].Close;
+                    data.TimeSeries[date].Open = item.Value.Open * fxData.TimeSeries[date].Open;
+                    data.TimeSeries[date].Low = item.Value.Low * fxData.TimeSeries[date].Low;
+                    data.TimeSeries[date].High = item.Value.High * fxData.TimeSeries[date].High;
+                    data.TimeSeries[date].Close = item.Value.Close * fxData.TimeSeries[date].Close;
                 }
-                data.TimeSeries[date].Open = item.Value.Open * openRate;
-                data.TimeSeries[date].Low = item.Value.Low * lowRate;
-                data.TimeSeries[date].High = item.Value.High * highRate;
-                data.TimeSeries[date].Close = item.Value.Close * closeRate;
             }
 
             return data;
@@ -121,7 +114,7 @@ namespace FinanceApp.Controllers
             
             if (currency != null && stockData != null)
             {
-                stockData = await AdjustStockPrice(stockData, currency);
+                stockData = await ConvertStockPrice(stockData, currency);
             }
 
             if(stockData != null)
@@ -152,7 +145,7 @@ namespace FinanceApp.Controllers
 
                 if(currency != null)
                 {
-                    result = await AdjustStockPrice(result, currency);
+                    result = await ConvertStockPrice(result, currency);
                 }
 
                 return Ok(result);
