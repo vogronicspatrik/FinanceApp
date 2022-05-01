@@ -2,7 +2,7 @@
 
 namespace FinanceApp.AlphaVantageModels
 {
-    public class DailyStockItem
+    public class DailyFxItem
     {
         [JsonProperty("1. open")]
         public double Open { get; set; }
@@ -15,8 +15,5 @@ namespace FinanceApp.AlphaVantageModels
         
         [JsonProperty("4. close")]
         public double Close { get; set; }
-        
-        [JsonProperty("5. volume")]
-        public double Volume { get; set; }
     }
 }

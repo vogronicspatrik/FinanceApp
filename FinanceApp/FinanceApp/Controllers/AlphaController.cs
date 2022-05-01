@@ -1,10 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Text;
 using FinanceApp.AlphaVantageModels;
-using System.Text.Json;
-using System.Linq;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace FinanceApp.Controllers
 {
@@ -14,9 +10,8 @@ namespace FinanceApp.Controllers
     - TIME_SERIES_DAILY
     SYMBOL_SEARCH
     CURRENCY_EXCHANGE_RATE
-    FX_DAILY
+    - FX_DAILY
     DIGITAL_CURRENCY_DAILY
-    INFLATION_EXPECTATION
     */
 
     [ApiController]
@@ -45,6 +40,25 @@ namespace FinanceApp.Controllers
             return null;
         }
 
+        public async Task<DailyFxSeries> FxDailyData(string fromSymbol, string toSymbol)
+        {
+            string queryString = $"https://www.alphavantage.co/query?function=FX_DAILY&from_symbol={fromSymbol}&to_symbol={toSymbol}&outputsize=full&apikey={APIKEY}";
+            Uri uri = new Uri(queryString);
+
+            var response = await _httpClient.GetAsync(uri);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonStr = await response.Content.ReadAsStringAsync();
+                if (jsonStr != null)
+                {
+                    DailyFxSeries fxItem = JsonConvert.DeserializeObject<DailyFxSeries>(jsonStr);
+                    return fxItem;
+                }
+            }
+            return null;
+        }
+
         [HttpGet("stock/{symbol}")]
         public async Task<ActionResult<DailyStockSeries>> Stock(string symbol)
         {
@@ -58,7 +72,7 @@ namespace FinanceApp.Controllers
             return BadRequest();
         }
 
-        [HttpGet("stockRange/{symbol}/{fromDate}:{toDate}")]
+        [HttpGet("stockRange/{symbol}/{fromDate}/{toDate}")]
         public async Task<ActionResult<DailyStockSeries>> StockRange(string symbol, DateTime fromDate, DateTime toDate)
         {
             DailyStockSeries allItems = await StockData(symbol);
@@ -71,6 +85,32 @@ namespace FinanceApp.Controllers
                     .ToDictionary(i => i.Key, i => i.Value);
 
                 DailyStockSeries result = new DailyStockSeries
+                {
+                    MetaData = allItems.MetaData,
+                    TimeSeries = resultTimeSeries
+                };
+
+                return Ok(result);
+            }
+
+            return BadRequest();
+        }
+
+        [HttpGet("fx/{fromSymbol}/{toSymbol}/{fromDate}/{toDate}")]
+        public async Task<ActionResult<DailyFxSeries>> Fx(string fromSymbol, string toSymbol, DateTime fromDate, DateTime toDate)
+        {
+            DailyFxSeries allItems = await FxDailyData(fromSymbol, toSymbol);
+
+            if(allItems != null && allItems.TimeSeries != null)
+            {
+                Dictionary<DateTime, DailyFxItem> resultTimeSeries;
+
+                resultTimeSeries = allItems.TimeSeries
+                    .Where(i => i.Key >= fromDate && i.Key <= toDate)
+                    .OrderBy(i => i.Key)
+                    .ToDictionary(i => i.Key, i => i.Value);
+
+                DailyFxSeries result = new DailyFxSeries
                 {
                     MetaData = allItems.MetaData,
                     TimeSeries = resultTimeSeries
