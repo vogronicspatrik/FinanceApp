@@ -12,6 +12,17 @@ namespace FinanceApp.Repository
         {
             _context = masterDbContext;
         }
+
+        public async Task<IEnumerable<Category>> GetAllCategoriesForUser(string userId)
+        {
+            return await _context.categories.Where(category => category.UserId == userId).ToListAsync();
+        }
+
+        public async Task<Category> GetCategoryById(int id)
+        {
+            return await _context.categories.FindAsync(id);
+        }
+
         public async Task<Category> Create(Category category)
         {
             _context.categories.Add(category);
@@ -20,21 +31,18 @@ namespace FinanceApp.Repository
             return category;
         }
 
-        public async Task Delete(int Id)
+        public async Task<bool> Delete(int id, string userId)
         {
-            var categoryToDelete = await _context.categories.FindAsync(Id);
+            var categoryToDelete = await _context.categories.FindAsync(id);
+
+            if (categoryToDelete == null || categoryToDelete.UserId != userId) return false;
+
+            //TODO: Clear it from transactions
+
             _context.categories.Remove(categoryToDelete);
             await _context.SaveChangesAsync();
-        }
 
-        public async Task<IEnumerable<Category>> GetAllCategories()
-        {
-            return await _context.categories.ToListAsync();
-        }
-
-        public async Task<Category> GetCategoryById(int Id)
-        {
-            return await _context.categories.FindAsync(Id);
+            return true;
         }
     }
 }

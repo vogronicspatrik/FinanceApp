@@ -1,0 +1,66 @@
+<div class="card extension-panel mb-2">
+  <div class="card-body p-0">
+    <div class="extension-header d-flex justify-content-between flex-grow-1 align-items-center p-1"
+         [ngClass]="{'border-open': open}" (click)="open = !open">
+      <div class="row w-100 align-items-center">
+        <div class="col-md-8 col-6 row">
+          <div class="col-md-6 col-12">
+            {{wallet?.type}}
+          </div>
+          <div class="col-md-6 col-12 text-md-center fst-italic">
+            {{wallet?.location}}
+          </div>
+        </div>
+        <div class="col-md-4 col-6 text-end"
+             [ngClass]="{'text-danger': wallet && wallet.balance < 0, 'text-success': wallet && wallet.balance >= 0}">{{walletGetBalance(wallet)}}</div>
+      </div>
+      <div class="expand-button align-middle">
+        <mat-icon class="align-middle">{{open ? "expand_less" : "expand_more"}}</mat-icon>
+      </div>
+    </div>
+    <div class="extension-body p-1" *ngIf="open">
+      <div class="row">
+        <div class="col-12" *ngIf="wallet?.owner">
+          <span class="fw-bold">{{'Owner'|translate}}:</span> {{wallet?.owner}}
+        </div>
+        <div class="col-12" *ngIf="wallet?.accountNumber">
+          <span class="fw-bold">{{'Account number'|translate}}:</span> {{wallet?.accountNumber}}
+        </div>
+      </div>
+      <div *ngIf="wallet.transactions.length == 0; then noTransaction else hasTransaction"></div>
+      <ng-template #noTransaction>
+        <h4 class="text-center">{{'No transactions'|translate}}</h4>
+      </ng-template>
+      <ng-template #hasTransaction>
+        <div class="card">
+          <div class="card-header text-center">
+            <h5 class="my-auto">{{'Last five transaction'|translate}}</h5>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                <tr>
+                  <th scope="col">{{'Date'|translate}}</th>
+                  <th scope="col">{{'Notice'|translate}}</th>
+                  <th scope="col">{{'Category'|translate}}</th>
+                  <th scope="col">{{'Price'|translate}}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let transaction of wallet?.transactions">
+                  <td>{{transaction.dateOfTransaction | date: 'yyyy/MM/dd'}}</td>
+                  <td>{{transaction.notice}}</td>
+                  <td>{{transaction.category.name}}</td>
+                  <td>{{transactionGetPrice(transaction, wallet.currency)}}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+      <a [routerLink]="['/wallets/'+ wallet.id]" class="btn btn-secondary col-md-4 offset-md-4 col-8 offset-2 mt-2">{{'Wallet details'|translate}}</a>
+    </div>
+  </div>
+</div>

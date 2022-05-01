@@ -1,84 +1,73 @@
-﻿using FinanceApp.Models;
+﻿using System.Security.Claims;
+using FinanceApp.Models;
 using FinanceApp.Repository;
-using FinanceApp.Repository.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace FinanceApp.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class WalletsController : ControllerBase
     {
         private readonly IWalletRepository _walletRepository;
-        private readonly ITransactionRepository _transactionRepository;
 
-        public WalletsController(IWalletRepository walletRepository, ITransactionRepository transactionRepository)
+        public WalletsController(IWalletRepository walletRepository)
         {
             _walletRepository = walletRepository;
-            _transactionRepository = transactionRepository;
         }
 
-        // GET: api/<CardsController>
+        // GET: api/<WalletsController>
         [HttpGet]
-        public async Task<IEnumerable<WalletDTO>> GetWallets()
+        public async Task<IEnumerable<Wallet>> GetWallets()
         {
-            var wallets = from wallet in await _walletRepository.GetAllWallets()
-                          select new WalletDTO()
-                          {
-                              AccountNumber = wallet.AccountNumber,
-                              Owner = wallet.Owner,
-                              Type = wallet.Type,
-                              Balance = wallet.Balance,
-                              Location = wallet.Location,
-                              Currency = wallet.Currency,
-                              TransactionList =  _transactionRepository.GetLastFiveTransaction(wallet.Id).Result.ToList()
-                          };
-            return wallets;
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return await _walletRepository.GetAllWalletsForUser(userId);
         }
 
-        // GET api/<CardsController>/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Wallet>> GetWallet(int id)
+        // GET api/<WalletsController>/5/2022-02-16/2022-03-16
+        [HttpGet("{id:int}/{from:datetime}/{to:datetime}")]
+        public async Task<ActionResult<Wallet>> GetWallet(int id, DateTime from, DateTime to)
         {
-            return await _walletRepository.GetWalletById(id);
+            return await _walletRepository.GetWalletById(id, from, to);
         }
 
-        // POST api/<CardsController>
+        // POST api/<WalletsController>
         [HttpPost]
         public async Task<ActionResult<Wallet>> CreateWallet([FromBody] Wallet wallet)
         {
+            wallet.UserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var newWallet = await _walletRepository.Create(wallet);
-            return CreatedAtAction(nameof(GetWallets), new { id = newWallet.Id }, newWallet);
-
+            return CreatedAtAction(nameof(GetWallets), new {id = newWallet.Id}, newWallet);
         }
 
-        // PUT api/<CardsController>/5
-        [HttpPut]
+        // PUT api/<WalletsController>/5
+        [HttpPut("{id:int}")]
         public async Task<ActionResult> UpdateWallet(int id, [FromBody] Wallet wallet)
         {
-            if(id != wallet.Id)
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            if (await _walletRepository.Update(id, wallet, userId))
             {
-                return BadRequest();
+                return NoContent();
             }
 
-            await _walletRepository.Update(wallet);
-
-            return NoContent();
+            return BadRequest();
         }
 
-        // DELETE api/<CardsController>/5
-        [HttpDelete("{id}")]
+        // DELETE api/<WalletsController>/5
+        [HttpDelete("{id:int}")]
         public async Task<ActionResult> Delete(int id)
         {
-            var walletToDelete = await _walletRepository.GetWalletById(id);
-            if(walletToDelete == null)
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            if (await _walletRepository.Delete(id, userId))
             {
-                return NotFound();
+                return NoContent();
             }
-            await _walletRepository.Delete(walletToDelete.Id);
-            return NoContent();
+
+            return BadRequest();
         }
     }
 }

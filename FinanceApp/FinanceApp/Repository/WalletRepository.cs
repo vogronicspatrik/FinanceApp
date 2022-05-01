@@ -13,6 +13,27 @@ namespace FinanceApp.Repository
             _context = masterDbContext;
         }
 
+        public async Task<IEnumerable<Wallet>> GetAllWalletsForUser(string userId)
+        {
+            return await _context.wallets
+                .Where(wallet => wallet.UserId == userId)
+                .Include(wallet =>
+                    wallet.Transactions.OrderByDescending(transaction => transaction.DateOfTransaction).Take(5))
+                .ThenInclude(transaction => transaction.Category)
+                .ToListAsync();
+        }
+
+        public async Task<Wallet> GetWalletById(int id, DateTime from, DateTime to)
+        {
+            return await _context.wallets.Where(wallet => wallet.Id == id)
+                .Include(wallet => wallet.Transactions
+                    .Where(transaction => transaction.DateOfTransaction >= from && transaction.DateOfTransaction <= to)
+                    .OrderBy(transaction => transaction.DateOfTransaction)
+                )
+                .ThenInclude(transaction => transaction.Category)
+                .FirstAsync();
+        }
+
         public async Task<Wallet> Create(Wallet wallet)
         {
             _context.wallets.Add(wallet);
@@ -21,27 +42,46 @@ namespace FinanceApp.Repository
             return wallet;
         }
 
-        public async Task Delete(int Id)
+        public async Task<bool> Update(int id, Wallet wallet, string userId)
         {
-            var walletToDelete = await _context.wallets.FindAsync(Id);
+            var walletToUpdate = await _context.wallets.FindAsync(id);
+
+            if (walletToUpdate == null || walletToUpdate.UserId != userId) return false;
+
+            walletToUpdate.Location = wallet.Location;
+            walletToUpdate.Type = wallet.Type;
+            walletToUpdate.Owner = wallet.Owner;
+            walletToUpdate.AccountNumber = wallet.AccountNumber;
+
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> Delete(int id, string userId)
+        {
+            var walletToDelete = await _context.wallets.FindAsync(id);
+
+            if (walletToDelete == null || walletToDelete.UserId != userId) return false;
+
             _context.wallets.Remove(walletToDelete);
+
             await _context.SaveChangesAsync();
+
+            return true;
         }
 
-        public async Task<IEnumerable<Wallet>> GetAllWallets()
+        public async Task<bool> UpdateBalance(int id, int amount, string userId)
         {
-            return await _context.wallets.ToListAsync();
-        }
+            var walletToUpdate = await _context.wallets.FindAsync(id);
 
-        public async Task<Wallet> GetWalletById(int Id)
-        {
-            return await _context.wallets.FindAsync(Id);
-        }
+            if (walletToUpdate == null || walletToUpdate.UserId != userId) return false;
 
-        public async Task Update(Wallet wallet)
-        {
-            _context.Entry(wallet).State = EntityState.Modified;
+            walletToUpdate.Balance += amount;
+
             await _context.SaveChangesAsync();
+
+            return true;
         }
     }
 }

@@ -1,6 +1,13 @@
-<body>
-  <app-nav-menu></app-nav-menu>
-  <div class="container">
-    <router-outlet></router-outlet>
+<div id="main-wrapper">
+  <app-sidebar (updatePage)="receiveMessage($event)"></app-sidebar>
+  <div id="content">
+    <app-nav-menu [currentPage]="currentPage" (switchLanguage)="switchLanguage($event)"
+                  (updatePage)="receiveMessage($event)"></app-nav-menu>
+    <div class="big-margin"></div>
+    <div class="mx-3">
+      <div class="page-content">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
   </div>
-</body>
+</div>

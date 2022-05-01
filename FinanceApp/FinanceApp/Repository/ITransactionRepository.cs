@@ -7,10 +7,9 @@ namespace FinanceApp.Repository
     public interface ITransactionRepository
     {
         Task<IEnumerable<Transaction>> GetAllTransactions();
-        Task<Transaction> GetTransactionById(int Id);
+        Task<Transaction> GetTransactionById(int id);
         Task<Transaction> Create(Transaction transaction);
         Task Update(Transaction transaction);
-        Task Delete(int Id);
-        Task<IEnumerable<Transaction>> GetLastFiveTransaction(int Id);
+        Task Delete(int id);
     }
 }

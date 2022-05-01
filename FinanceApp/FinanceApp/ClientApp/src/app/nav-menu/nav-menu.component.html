@@ -1,45 +1,31 @@
 <header>
-  <nav
-    class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3"
-  >
-    <div class="container">
-      <a class="navbar-brand" [routerLink]="['/']">FinanceApp</a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target=".navbar-collapse"
-        aria-label="Toggle navigation"
-        [attr.aria-expanded]="isExpanded"
-        (click)="toggle()"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div
-        class="navbar-collapse collapse d-sm-inline-flex justify-content-end"
-        [ngClass]="{ show: isExpanded }"
-      >
-        <ul class="navbar-nav flex-grow">
-          <li
-            class="nav-item"
-            [routerLinkActive]="['link-active']"
-            [routerLinkActiveOptions]="{ exact: true }"
-          >
-            <a class="nav-link text-dark" [routerLink]="['/']">Home</a>
+  <nav class="navbar navbar-expand navbar-light">
+    <button type="button" id="sidebarCollapse" class="btn navbar-btn text-white fw-bold">
+      <mat-icon class="align-middle">menu</mat-icon>
+    </button>
+    <ul class="nav navbar-nav h3 w-100 justify-content-center">
+      <li class="nav-item text-light">{{currentPage|translate}}</li>
+    </ul>
+    <ul class=" navbar-nav ms-auto">
+      <li class="nav-item">
+        <a class="nav-link text-light" [routerLink]="['/settings']" (click)="updatePage.emit('Settings')">
+          <mat-icon class="align-middle">settings</mat-icon>
+        </a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link text-light" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <mat-icon class="align-middle">language</mat-icon>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li>
+            <a class="dropdown-item text-light" (click)="switchLanguage.emit('en')" role="button"><img src="assets/img/gb.svg" width="25px"> {{'English'|translate}}</a>
           </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/counter']"
-              >Counter</a
-            >
-          </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/fetch-data']"
-              >Fetch data</a
-            >
+          <li>
+            <a class="dropdown-item text-light" (click)="switchLanguage.emit('hun')" role="button"><img src="assets/img/hu.svg" width="25px"> {{'Hungarian'|translate}}</a>
           </li>
         </ul>
-        <app-login-menu></app-login-menu>
-      </div>
-    </div>
+      </li>
+    </ul>
+    <app-login-menu></app-login-menu>
   </nav>
 </header>

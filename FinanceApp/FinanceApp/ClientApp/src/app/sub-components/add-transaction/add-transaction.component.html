@@ -1,0 +1,64 @@
+<div class="card mb-2">
+  <div class="card-header d-flex d-flex justify-content-between align-items-center">
+    <h4 class="m-0">{{'Add Transaction'|translate}}</h4>
+    <button class="btn btn-fix-size" [ngClass]="newTransactionOpen ? 'btn-success' : 'btn-danger'"
+            (click)="newTransactionOpen = !newTransactionOpen">
+      <h4 class="fw-bold lh-sm my-auto">{{newTransactionOpen ? '+' : '-'}}</h4>
+    </button>
+  </div>
+  <div class="card-body" *ngIf="newTransactionOpen">
+    <form #transactionForm="ngForm" (ngSubmit)="onSubmit(transactionForm)">
+      <div class="form-group">
+        <div class="row">
+          <!-- Transaction Date -->
+          <mat-form-field>
+            <input matInput id="Date" name="Date" [ngxMatDatetimePicker]="picker" placeholder="{{'Transaction date'|translate}}"
+                   [(ngModel)]="newTransaction.dateOfTransaction">
+            <mat-datepicker-toggle matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
+            <ngx-mat-datetime-picker #picker></ngx-mat-datetime-picker>
+          </mat-form-field>
+          <!-- Transaction Notice -->
+          <div class="form-group mb-4 col-md-6">
+            <label for="Notice">{{'Notice'|translate}}<span class="text-danger">*</span></label>
+            <input id="Notice" name="Notice" type="text" class="form-control" [(ngModel)]="newTransaction.notice"
+                   #transactionNotice="ngModel" required minlength="2"
+                   [ngClass]="{'is-invalid': transactionNotice.touched && transactionNotice.errors}"
+            >
+            <div [hidden]="!transactionNotice.errors?.required" class="invalid-feedback">
+              {{'Location is required'|translate}}
+            </div>
+            <div [hidden]="!transactionNotice.errors?.minlength" class="invalid-feedback">
+              {{'Must be at least 2 characters'|translate}}
+            </div>
+          </div>
+          <!-- Transaction Category -->
+          <div class="form-group mb-4 col-md-6">
+            <label for="Category">{{'Category'|translate}}</label>
+            <select id="Category" name="Category" class="form-select" [(ngModel)]="newTransaction.category.id">
+              <option value="0">{{'Uncategorized'|translate}}</option>
+              <option *ngFor="let category of categories" value="{{category.id}}">{{category.name}}</option>
+            </select>
+          </div>
+          <!-- Transaction Type -->
+          <div class="form-group mb-4 col-md-6">
+            <label for="Type">{{'Type'|translate}}</label>
+            <select id="Type" name="Type" class="form-select" [(ngModel)]="newTransaction.type">
+              <option value="EXPENSE">{{'Expense'|translate}}</option>
+              <option value="INCOME">{{'Income'|translate}}</option>
+            </select>
+          </div>
+          <!-- Transaction Price -->
+          <div class="form-group mb-4 col-md-6">
+            <label for="Price">{{'Amount'|translate}} ({{wallet.currency}})</label>
+            <input id="Price" name="Price" type="number" class="form-control"
+                   [(ngModel)]="newTransaction.price">
+          </div>
+          <button type="submit" [disabled]="!transactionForm.form.valid" class="btn btn-success offset-md-2 col-md-8">
+            {{'Add Transaction'|translate}}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+

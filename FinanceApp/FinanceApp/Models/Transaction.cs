@@ -1,15 +1,29 @@
-﻿using FinanceApp.Enums;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using FinanceApp.Enums;
+using System.Text.Json.Serialization;
 
 namespace FinanceApp.Models
 {
     public class Transaction
     {
-        public int Id { get; set; }
-        public float Price { get; set; }
-        public DateTime DateOfTransaction { get; set; }
-        public int CategoryId { get; set; }
-        public string Notice { get; set; }
-        public int WalletId { get; set; }
-        public int Type { get; set; }
+        [Required] [Key] public int Id { get; set; }
+
+        [Required] public string Notice { get; set; }
+
+        [Required] public TransactionType Type { get; set; }
+
+        [Required] public int Price { get; set; }
+
+        [Required] public DateTime DateOfTransaction { get; set; }
+
+        [DefaultValue(false)] public bool IsCategorized { get; set; }
+
+        public Category? Category { get; set; }
+        [ForeignKey("Category")] public int CategoryId { get; set; }
+
+        [JsonIgnore] public Wallet? Wallet { get; set; }
+        [ForeignKey("Wallet")] public int WalletId { get; set; }
     }
 }

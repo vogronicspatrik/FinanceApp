@@ -1,0 +1,17 @@
+.btn-fix-size {
+  width: 35px;
+  height: 35px;
+  padding: 0;
+}
+
+.search-button {
+  width: 45px;
+  height: 45px;
+  padding: 0;
+}
+
+.edit-button {
+  width: 45px;
+  height: 38px;
+  padding: 0;
+}

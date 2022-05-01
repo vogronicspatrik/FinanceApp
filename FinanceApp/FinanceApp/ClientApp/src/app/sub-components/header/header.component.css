@@ -1,0 +1,38 @@
+.liner {
+  display: flex;
+  align-items: flex-start;
+  text-align: left;
+}
+.liner:after {
+  content: "";
+  flex-grow: 1;
+  height: 2px;
+  background: #5e93a5;
+  min-width: 20px;
+  margin: auto;
+}
+.liner:after {
+  margin-left: 10px;
+}
+
+body {
+  padding: 50px;
+  background-color: #11151C;
+  color: #7D4E57;
+  line-height: 170%;
+  font-family: sans-serif;
+}
+body .container {
+  width: 80%;
+  margin: 0 auto;
+}
+body .container .nest {
+  width: 50%;
+  margin: 40px auto;
+  border: solid 1px;
+  padding: 20px;
+}
+
+h1, h2, h3 {
+  color: #19647E;
+}
