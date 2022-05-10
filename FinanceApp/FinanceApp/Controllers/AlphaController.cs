@@ -107,6 +107,63 @@ namespace FinanceApp.Controllers
             return data;
         }
 
+        public async Task<DailyStockSeries> StockRange(string symbol, DateTime fromDate, DateTime toDate, Currency? currency)
+        {
+            DailyStockSeries allItems = await StockData(symbol);
+
+            if (allItems != null && allItems.TimeSeries != null)
+            {
+                Dictionary<DateTime, DailyStockItem> resultTimeSeries = allItems.TimeSeries
+                    .Where(i => i.Key >= fromDate && i.Key <= toDate)
+                    .OrderBy(i => i.Key)
+                    .ToDictionary(i => i.Key, i => i.Value);
+
+                DailyStockSeries result = new DailyStockSeries
+                {
+                    MetaData = allItems.MetaData,
+                    TimeSeries = resultTimeSeries
+                };
+
+                if (currency != null)
+                {
+                    result = await ConvertStockPrice(result, currency);
+                }
+
+                return result;
+            }
+
+            return null;
+        }
+
+        public async Task<List<string>> SearchSymbol(string keyWord)
+        {
+            List<string> result = new List<string>();
+
+            string queryString = $"https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords={keyWord}&apikey={APIKEY}";
+            Uri uri = new Uri(queryString);
+
+            var response = await _httpClient.GetAsync(uri);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonStr = await response.Content.ReadAsStringAsync();
+                if (jsonStr != null)
+                {
+                    var items = JsonConvert.DeserializeObject<Dictionary<string, List<SymbolSearchResultItem>>>(jsonStr);
+                    items.First().Value.Take(3).ToList().ForEach(itm => result.Add(itm.Symbol));     
+                }
+            }
+
+            return result;
+        }
+
+        [HttpGet("symbol/{keyWord}")]
+        public async Task<List<string>> Symbol(string keyWord)
+        {
+            var result = await SearchSymbol(keyWord);
+            return result;
+        }
+
         [HttpGet("stock/{symbol}/{currency?}")]
         public async Task<ActionResult<DailyStockSeries>> Stock(string symbol, Currency? currency)
         {
@@ -126,29 +183,12 @@ namespace FinanceApp.Controllers
         }
 
         [HttpGet("stockRange/{symbol}/{fromDate}/{toDate}/{currency?}")]
-        public async Task<ActionResult<DailyStockSeries>> StockRange(string symbol, DateTime fromDate, DateTime toDate, Currency? currency)
+        public async Task<ActionResult<DailyStockSeries>> GetStockRange(string symbol, DateTime fromDate, DateTime toDate, Currency? currency)
         {
-            DailyStockSeries allItems = await StockData(symbol);
-
-            if (allItems != null && allItems.TimeSeries != null)
+            DailyStockSeries resultData = await StockRange(symbol, fromDate, toDate, currency);
+            if (resultData != null)
             {
-                Dictionary<DateTime, DailyStockItem> resultTimeSeries = allItems.TimeSeries
-                    .Where(i => i.Key >= fromDate && i.Key <= toDate)
-                    .OrderBy(i => i.Key)
-                    .ToDictionary(i => i.Key, i => i.Value);
-
-                DailyStockSeries result = new DailyStockSeries
-                {
-                    MetaData = allItems.MetaData,
-                    TimeSeries = resultTimeSeries
-                };
-
-                if(currency != null)
-                {
-                    result = await ConvertStockPrice(result, currency);
-                }
-
-                return Ok(result);
+                return Ok(resultData);
             }
 
             return BadRequest();

@@ -1,0 +1,55 @@
+<div class="card extension-panel mb-2">
+  <div class="card-body p-0">
+    <div class="extension-header d-flex justify-content-between flex-grow-1 align-items-center p-1"
+    [ngClass]="{'border-open': open}" (click)="open = !open">
+ <div class="row w-100 align-items-center">
+   <div class="col-md-8 col-6 row">
+     <div class="col-md-6 col-12">
+      {{stock?.symbol}}
+     </div>
+     <div class="col-md-6 col-12 text-md-center fst-italic">
+      x{{stock?.amount}}
+     </div>
+   </div>
+   <div class="col-md-3 col-12"
+        [ngClass]="{'text-danger': currentTotalValue < totalValueAtPurchase, 'text-success': currentTotalValue >= totalValueAtPurchase}">{{currentTotalValue}}</div>
+ </div>
+ <div class="expand-button align-middle">
+   <mat-icon class="align-middle">{{open ? "expand_less" : "expand_more"}}</mat-icon>
+ </div>
+</div>
+    <div class="card-body" *ngIf="open">
+      <form #stockForm="ngForm">
+        <div class="form-group">
+        <div class="row">
+            <div class="col-md-3 col-12">
+              <p>Value at purchase:</p>
+            </div>
+            <div class="col-md-3 col-12">
+              {{stock?.valueAtPurchase}}
+            </div>
+            <div class="col-md-3 col-12">
+              <p>Total value at purchase:</p>
+            </div>
+            <div class="col-md-3 col-12">
+              {{totalValueAtPurchase}}
+            </div>
+        </div>
+        <div class="row">
+          <div class="col-md-3 col-12">
+            <p>Current value:</p>
+          </div>
+          <div class="col-md-3 col-12">
+            {{currentPrice}}
+          </div>
+          <div class="col-md-3 col-12">
+            <p>Current total value:</p>
+          </div>
+          <div class="col-md-3 col-12"
+             [ngClass]="{'text-danger': totalValueAtPurchase > currentTotalValue, 'text-success': totalValueAtPurchase <= currentTotalValue}">{{currentTotalValue}}</div>
+        </div>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>

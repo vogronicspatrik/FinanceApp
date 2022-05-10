@@ -25,6 +25,9 @@ import {WalletComponent} from './sub-components/wallet/wallet.component';
 import {AddWalletComponent} from './sub-components/add-wallet/add-wallet.component';
 import {WalletTransactionsComponent} from './wallet-transactions/wallet-transactions.component';
 import {AddTransactionComponent} from './sub-components/add-transaction/add-transaction.component';
+import {AddStockComponent} from './sub-components/add-stock/add-stock.component';
+import {StockComponent} from './sub-components/stock/stock.component';
+import {StockDashboardComponent} from './stock-dashboard/stock-dashboard.component';
 
 import {
   NgxMatDatetimePickerModule,
@@ -46,7 +49,10 @@ import {
     WalletComponent,
     AddWalletComponent,
     WalletTransactionsComponent,
-    AddTransactionComponent
+    AddTransactionComponent,
+    AddStockComponent,
+    StockDashboardComponent,
+    StockComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),
@@ -71,6 +77,7 @@ import {
       {path: 'investments/stocks', component: HomeComponent, canActivate: [AuthorizeGuard]},
       {path: 'valuable_items', component: ValuableItemsDashboardComponent, canActivate: [AuthorizeGuard]},
       {path: 'fix_costs', component: FixCostsDashboardComponent, canActivate: [AuthorizeGuard]},
+      {path: 'investments/stocks', component: StockDashboardComponent, canActivate: [AuthorizeGuard]},
       {path: '', redirectTo: 'dashboard', pathMatch: 'full'}
     ]),
     NoopAnimationsModule,

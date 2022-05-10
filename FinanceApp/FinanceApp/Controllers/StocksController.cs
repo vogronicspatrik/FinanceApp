@@ -1,3 +1,4 @@
+using FinanceApp.Enums;
 using FinanceApp.Models;
 using FinanceApp.Repository;
 using Microsoft.AspNetCore.Mvc;
@@ -62,6 +63,63 @@ namespace FinanceApp.Controllers
             }
             await _stockRepository.Delete(stockToDelete.Id);
             return NoContent();
+        }
+
+        [HttpGet("currentPrice/{id:int}/{currency?}")]
+        public async Task<ActionResult<double>> GetCurrentPrice(int id, Currency currency)
+        {   
+            double result = 0.0;
+            Stock stock = await _stockRepository.GetStockById(id);
+
+            if(stock != null)
+            {
+                AlphaController alphaController = new AlphaController();
+                var stockInfo = await alphaController.StockData(stock.Symbol);
+                if (stockInfo.TimeSeries != null)
+                {
+                    var item = stockInfo.TimeSeries.First();
+                    result = stock.Amount * item.Value.Close;
+
+                    if(currency != null)
+                    {
+                        string currencyStr = currency == Currency.HUF ? "HUF" : "EUR";
+                        var fxData = await alphaController.FxRealTime("USD", currencyStr);
+                        if (fxData == null)
+                        {
+                            result = result * fxData.ExchangeRate;
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        [HttpGet("history/{id:int}/{currency?}")]
+        public async Task<ActionResult<Dictionary<string, double>>> GetStockHistory(int id, Currency currency)
+        {
+            Dictionary<string, double> result = new Dictionary<string, double>();
+            
+            if(currency != null)
+            {
+                Stock stock = await _stockRepository.GetStockById(id);
+
+                if (stock != null)
+                {
+                    AlphaController alphaController = new AlphaController();
+                    var stockHistory = await alphaController.StockRange(stock.Symbol, stock.PurchaseTime, DateTime.Now, currency);
+                    
+                    if(stockHistory != null)
+                    {
+                        foreach (var stockItem in stockHistory.TimeSeries)
+                        {
+                            result.Add(stockItem.Key.ToString(), stockItem.Value.Close);
+                        }
+                    }
+                }
+            }
+
+            return result;
         }
     }
 }

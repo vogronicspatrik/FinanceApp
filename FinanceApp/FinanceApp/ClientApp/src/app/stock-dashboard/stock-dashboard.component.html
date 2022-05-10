@@ -1,0 +1,5 @@
+<app-header [text]="'Add'"></app-header>
+<app-add-stock (addNewStock)="addNewStock($event)"></app-add-stock>
+
+<app-header [text]="'Stocks'"></app-header>
+<app-stock *ngFor="let stock of stocks" [stock]="stock"></app-stock>
