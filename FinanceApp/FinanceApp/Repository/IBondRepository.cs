@@ -10,5 +10,6 @@ namespace FinanceApp.Repository
         Task<Bond> Create(Bond bond);
         Task<bool> Update(int id, Bond bond, string userId);
         Task<bool> Delete(int id, string userId);
+        Task<IEnumerable<object>> GetSummary(string userId);
     }
 }

@@ -1,5 +1,7 @@
 ﻿using System.Security.Claims;
+using FinanceApp.Enums;
 using FinanceApp.Models;
+using FinanceApp.Models.StatisticModels;
 using FinanceApp.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -68,6 +70,22 @@ namespace FinanceApp.Controllers
             }
 
             return BadRequest();
+        }
+
+        // GET: api/<WalletsController>/GetCategoryStatistic/2022-01-01/2022-05-01
+        [HttpGet("GetCategoryStatistic/{from:datetime}/{to:datetime}")]
+        public async Task<IEnumerable<CategoryStatistic>[]> GetCategoryStatistic(DateTime from, DateTime to)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return await _walletRepository.GetCategoryStatistics(userId, Currency.EUR, from, to);
+        }
+        
+        // GET: api/<WalletsController>/GetSummary
+        [HttpGet("GetSummary")]
+        public async Task<IEnumerable<object>> GetWalletSum(DateTime from, DateTime to)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return await _walletRepository.GetSummary(userId);
         }
     }
 }

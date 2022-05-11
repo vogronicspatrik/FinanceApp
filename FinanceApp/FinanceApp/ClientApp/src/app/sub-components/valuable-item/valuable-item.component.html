@@ -1,0 +1,37 @@
+<div class="card extension-panel mb-2">
+  <div class="card-body p-0">
+    <div class="extension-header d-flex justify-content-between flex-grow-1 align-items-center p-1"
+         [ngClass]="{'border-open': open}" (click)="open = !open">
+      <div class="row w-100 align-items-center">
+        <div class="col-md-8 col-6 row">
+          <div class="col-md-6 col-12">
+            {{valuableItem.name}}
+          </div>
+          <div class="col-md-6 col-12 text-md-center fst-italic">
+            {{valuableItem.dateOfPurchasing | date: "yyyy/MM/dd"}}
+          </div>
+        </div>
+        <div
+          class="col-md-4 col-6 text-end">{{displayValueWithCurrency(valuableItem.currentValue, valuableItem.currency)}}</div>
+      </div>
+      <div class="expand-button align-middle">
+        <mat-icon class="align-middle">{{open ? "expand_less" : "expand_more"}}</mat-icon>
+      </div>
+    </div>
+    <div class="extension-body p-1" *ngIf="open">
+      <div class="row align-items-center text-center">
+        <div class="col-12 col-md-5">
+          <span class="fw-bold">{{'Original value'|translate}}
+            :</span> {{displayValueWithCurrency(valuableItem.originalValue, valuableItem.currency)}}
+        </div>
+        <div class="col-12 col-md-5">
+          <span class="fw-bold">{{'Amortization rate per year'|translate}}
+            :</span> {{valuableItem.amortizationRatePerYear}}%
+        </div>
+        <div class="col-12 col-md-2">
+          <button class="btn btn-danger" (click)="deleteItem(valuableItem.id)">{{'Delete'|translate}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

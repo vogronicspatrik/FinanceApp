@@ -12,7 +12,7 @@ import {NgForm} from "@angular/forms";
 export class SettingsComponent implements OnInit {
   @ViewChild('categoryForm', {static: false}) form: any;
 
-  category: Category = new Category('', 'Entertainment', '#417505');
+  category: Category = new Category('', '', '#FFFFFF');
   categories: Category[] = [];
   deleteCategoryList: number[] = [];
 

@@ -1,4 +1,5 @@
 ﻿using FinanceApp.Data;
+using FinanceApp.Enums;
 using FinanceApp.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,9 +21,23 @@ namespace FinanceApp.Repository
 
         public async Task<IEnumerable<Bond>> GetAllBondsForUser(string userId)
         {
-            return await _context.bonds
+            var bonds = await _context.bonds
                 .Where(bond => bond.UserId == userId)
                 .ToListAsync();
+
+            bonds.ForEach(bond =>
+            {
+                while (bond.MaturityDate < DateTime.Now)
+                {
+                    bond.MaturityDate = bond.ReturnInterval == BondReturnInterval.YEAR
+                        ? bond.MaturityDate.AddYears(1)
+                        : bond.MaturityDate.AddMonths(6);
+                }
+            });
+
+            await _context.SaveChangesAsync();
+
+            return bonds;
         }
 
         public async Task<Bond> GetBondById(int id)
@@ -48,7 +63,7 @@ namespace FinanceApp.Repository
 
             bondToUpdate.ReturnRate = bond.ReturnRate;
             bondToUpdate.ReturnInterval = bond.ReturnInterval;
-            bondToUpdate.BasePrice = bond.BasePrice;
+            bondToUpdate.FaceValue = bond.FaceValue;
             bondToUpdate.BondName = bond.BondName;
             bondToUpdate.Count = bond.Count;
 
@@ -68,6 +83,24 @@ namespace FinanceApp.Repository
             await _context.SaveChangesAsync();
 
             return true;
+        }
+
+        public async Task<IEnumerable<object>> GetSummary(string userId)
+        {
+            var output = await _context.bonds
+                .Where(bond => bond.UserId == userId)
+                .GroupBy(bond => new {currency = bond.Currency, interval = bond.ReturnInterval})
+                .Select(group => new
+                {
+                    group.Key.currency,
+                    group.Key.interval,
+                    summary = group.Sum(bond => bond.FaceValue * (bond.ReturnRate / 100) * bond.Count)
+                })
+                .OrderBy(g => g.currency)
+                .ThenByDescending(g => g.interval)
+                .ToListAsync();
+
+            return output;
         }
     }
 }

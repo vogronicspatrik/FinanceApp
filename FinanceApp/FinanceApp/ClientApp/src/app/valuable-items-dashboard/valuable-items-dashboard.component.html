@@ -1,1 +1,44 @@
-<p>valuable-items-dashboard works!</p>
+<app-header [text]="'Valuable Items'"></app-header>
+
+<div class="card mb-2">
+  <div class="card-body">
+    <h4 class="m-0 border-bottom-dark">{{'Summary'|translate}}</h4>
+    <div class="row g-0 justify-content-center">
+      <div *ngFor="let item of summary" class="col-12 col-md-6 my-2 px-2 border-y border-bottom-dark">
+        <h5>{{'Totals in'|translate}} {{item.currency}}:</h5>
+        <div class="row g-0 align-items-center">
+          <div class="col">
+            <h6>{{'Without Amortization'|translate}}:</h6>
+          </div>
+          <div class="text-end col-auto">
+            <h5>{{displayValueWithCurrency(item.withoutAmortization, item.currency)}}
+            </h5>
+          </div>
+        </div>
+        <div class="row g-0 align-items-center">
+          <div class="col">
+            <h6>{{'With Amortization'|translate}}:</h6>
+          </div>
+          <div class="text-end col-auto">
+            <h5>{{displayValueWithCurrency(item.withAmortization, item.currency)}}
+            </h5>
+          </div>
+        </div>
+        <div class="row g-0 align-items-center">
+          <div class="col">
+            <h6>{{'Difference'|translate}}:</h6>
+          </div>
+          <div class="text-end col-auto">
+            <h5>{{displayValueWithCurrency(item.withoutAmortization - item.withAmortization, item.currency)}}
+            </h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-valuable-item *ngFor="let valuableItem of valuableItems" [valuableItem]="valuableItem"
+                   (updateItems)="updateItems()"></app-valuable-item>
+
+<app-add-valuable-item (updateItems)="updateItems()"></app-add-valuable-item>

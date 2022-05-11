@@ -19,9 +19,6 @@
           <a [routerLink]="['/investments/stocks']" (click)="updatePage.emit('Stocks')">{{'Stocks'|translate}}</a>
         </li>
         <li>
-          <a [routerLink]="['/investments/crypto']" (click)="updatePage.emit('Crypto')">{{'Crypto'|translate}}</a>
-        </li>
-        <li>
           <a [routerLink]="['/investments/bonds']" (click)="updatePage.emit('Bonds')">{{'Bonds'|translate}}</a>
         </li>
       </ul>
@@ -30,7 +27,7 @@
         <a [routerLink]="['/valuable_items']" (click)="updatePage.emit('Valuable items')">{{'Valuable items'|translate}}</a>
     </li>
     <li class="nav-item" [routerLinkActive]="['active']">
-      <a [routerLink]="['/fix_costs']" (click)="updatePage.emit('Fix costs')">{{'Fix costs'|translate}}</a>
+      <a [routerLink]="['/regular_cash_flow']" (click)="updatePage.emit('Regular cash flow')">{{'Regular cash flow'|translate}}</a>
     </li>
   </ul>
 </nav>

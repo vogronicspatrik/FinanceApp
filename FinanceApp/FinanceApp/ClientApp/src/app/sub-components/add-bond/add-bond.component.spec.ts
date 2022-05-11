@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FixCostsDashboardComponent } from './fix-costs-dashboard.component';
+import { AddBondComponent } from './add-bond.component';
 
-describe('FixCostsDashboardComponent', () => {
-  let component: FixCostsDashboardComponent;
-  let fixture: ComponentFixture<FixCostsDashboardComponent>;
+describe('AddBondComponent', () => {
+  let component: AddBondComponent;
+  let fixture: ComponentFixture<AddBondComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FixCostsDashboardComponent ]
+      declarations: [ AddBondComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FixCostsDashboardComponent);
+    fixture = TestBed.createComponent(AddBondComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

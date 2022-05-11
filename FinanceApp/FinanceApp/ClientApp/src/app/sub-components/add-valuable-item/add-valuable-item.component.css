@@ -1,0 +1,17 @@
+.btn-fix-size {
+  width: 35px;
+  height: 35px;
+  padding: 0;
+}
+
+.number-input-fix-size {
+  width: 150px;
+}
+
+.currency-input-fix-size {
+  width: 80px;
+}
+
+.percentage-input-fix-size {
+  width: 60px;
+}

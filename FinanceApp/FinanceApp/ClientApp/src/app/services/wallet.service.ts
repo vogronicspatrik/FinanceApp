@@ -3,6 +3,8 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Wallet} from "../models/Wallet";
 import {Transaction} from "../models/Transaction";
+import {CategoryStatistic} from "../models/CategoryStatistic";
+import {CurrencyType} from "../models/Currency";
 
 const httpOptions = {
   headers: new HttpHeaders({'Content-type': 'application/json'})
@@ -70,5 +72,13 @@ export class WalletService {
 
   deleteTransaction(id: string): Observable<any> {
     return this.http.delete(`${this.baseUrl}api/transactions/${id}`);
+  }
+
+  getStatistic(from: string, to: string): Observable<any> {
+    return this.http.get<CategoryStatistic[][]>(`${this.baseUrl}api/wallets/GetCategoryStatistic/${from}/${to}`);
+  }
+
+  getSummary(): Observable<{currency: CurrencyType, summary: number}[]> {
+    return this.http.get<{currency: CurrencyType, summary: number}[]>(`${this.baseUrl}api/wallets/GetSummary`);
   }
 }

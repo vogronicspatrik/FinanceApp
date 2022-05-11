@@ -1,0 +1,31 @@
+.btn-fix-size {
+  width: 35px;
+  height: 35px;
+  padding: 0;
+}
+
+.number-input-fix-size {
+  width: 100px;
+}
+
+.currency-input-fix-size {
+  width: 70px;
+}
+
+.recurrency-period-input-fix-size {
+  width: 110px;
+}
+
+.percentage-input-fix-size {
+  width: 60px;
+}
+
+@media (max-width: 768px) {
+  .recurrency-period-input-fix-size {
+    width: 100px;
+  }
+
+  .number-input-fix-size {
+    width: 80px;
+  }
+}

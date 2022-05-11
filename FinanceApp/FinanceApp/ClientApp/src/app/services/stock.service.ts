@@ -30,7 +30,7 @@ export class StockService {
     const newStock = {
       Symbol: stock.symbol,
       PurchaseTime: stock.purchaseTime,
-      Currency: stock.currency,
+      CurrencyCode: stock.currencyCode,
       ValueAtPurchase: stock.valueAtPurchase,
       Amount: stock.amount
     }
@@ -42,7 +42,7 @@ export class StockService {
     const newStock = {
       Symbol: stock.symbol,
       PurchaseTime: stock.purchaseTime,
-      Currency: stock.currency,
+      CurrencyCode: stock.currencyCode,
       ValueAtPurchase: stock.valueAtPurchase,
       Amount: stock.amount
     }

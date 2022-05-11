@@ -1,0 +1,22 @@
+<div class="card mb-2">
+  <div class="card-body">
+    <div class="row">
+      <div class="col row align-items-center w-100">
+        <div class="col-md-8 col-6">
+          <div class="row">
+            <div class="col-md-6 col-12">{{cashFlowItem.name}}</div>
+            <div class="col-md-6 col-12 text-md-center fst-italic">{{cashFlowItem.otherParty}}</div>
+          </div>
+        </div>
+        <div class="col-md-4 col-6 text-end"
+             [ngClass]="cashFlowItem.type == 'COST' ? 'text-danger' : 'text-success'">{{displayValueWithCurrency(cashFlowItem.amount, cashFlowItem.currency)}}
+          / {{cashFlowItem.recurrencyPeriod | recurrencyPeriodDisplay | translate}}</div>
+      </div>
+      <div class="col-auto align-self-center">
+        <button class="btn btn-danger btn-fix-size" (click)="delete()">
+          <mat-icon class="align-middle">delete</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -43,7 +43,7 @@
                    [ngClass]="{'is-invalid': categoryName.touched && categoryName.errors}"
             >
             <div [hidden]="!categoryName.errors?.required" class="invalid-feedback">
-              {{'Name is required'|translate}}
+              {{'Field is required'|translate}}
             </div>
             <div [hidden]="!categoryName.errors?.minlength" class="invalid-feedback">
               {{'Must be at least 2 characters'|translate}}

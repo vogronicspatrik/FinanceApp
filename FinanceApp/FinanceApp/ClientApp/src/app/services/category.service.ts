@@ -19,7 +19,6 @@ export class CategoryService {
   }
 
   getCategories(): Observable<Category[]> {
-    console.log(this.baseUrl)
     return this.http.get<Category[]>(`${this.baseUrl}api/categories`);
   }
 

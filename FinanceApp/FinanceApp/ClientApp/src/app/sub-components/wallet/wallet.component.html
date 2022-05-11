@@ -51,7 +51,7 @@
                 <tr *ngFor="let transaction of wallet?.transactions">
                   <td>{{transaction.dateOfTransaction | date: 'yyyy/MM/dd'}}</td>
                   <td>{{transaction.notice}}</td>
-                  <td>{{transaction.category.name}}</td>
+                  <td>{{transaction.category?.name}}</td>
                   <td>{{transactionGetPrice(transaction, wallet.currency)}}</td>
                 </tr>
                 </tbody>

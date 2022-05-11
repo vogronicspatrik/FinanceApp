@@ -20,8 +20,8 @@ namespace FinanceApp.Models
 
         [DefaultValue(false)] public bool IsCategorized { get; set; }
 
-        public Category? Category { get; set; }
-        [ForeignKey("Category")] public int CategoryId { get; set; }
+        public virtual Category? Category { get; set; }
+        [ForeignKey("Category")] public int? CategoryId { get; set; }
 
         [JsonIgnore] public Wallet? Wallet { get; set; }
         [ForeignKey("Wallet")] public int WalletId { get; set; }

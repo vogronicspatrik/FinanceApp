@@ -1,0 +1,69 @@
+<script src="add-valuable-item.component.ts"></script>
+<div class="card mb-2">
+  <div class="card-header d-flex d-flex justify-content-between align-items-center">
+    <h4 class="m-0">{{'New Item'|translate}}</h4>
+    <button class="btn btn-fix-size" [ngClass]="newValuableItemOpen ? 'btn-success' : 'btn-danger'"
+            (click)="newValuableItemOpen = !newValuableItemOpen">
+      <h4 class="fw-bold lh-sm my-auto">{{newValuableItemOpen ? '+' : '-'}}</h4>
+    </button>
+  </div>
+  <div class="card-body" *ngIf="newValuableItemOpen">
+    <form #valuableItemForm="ngForm" (ngSubmit)="onSubmit(valuableItemForm)">
+      <div class="form-group">
+        <div class="row">
+          <!-- Item Purchasing Date -->
+          <mat-form-field>
+            <input matInput id="Date" name="Date" [matDatepicker]="picker"
+                   placeholder="{{'Purchasing date'|translate}}"
+                   [(ngModel)]="newValuableItem.dateOfPurchasing">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+          <!-- Item Name -->
+          <div class="form-group pb-3">
+            <label for="Name">{{'Item name'|translate}}<span class="text-danger">*</span></label>
+            <input id="Name" name="Name" type="text" class="form-control" [(ngModel)]="newValuableItem.name"
+                   #itemName="ngModel" required minlength="2"
+                   [ngClass]="{'is-invalid': itemName.touched && itemName.errors}"
+            >
+            <div [hidden]="!itemName.errors?.required" class="invalid-feedback">
+              {{'Field is required'|translate}}
+            </div>
+            <div [hidden]="!itemName.errors?.minlength" class="invalid-feedback">
+              {{'Must be at least 2 characters'|translate}}
+            </div>
+          </div>
+          <!-- Item Value -->
+          <div class="col-12 col-md-6 form-group mb-2">
+            <div class="row justify-content-center">
+              <label for="Value" class="col-12 col-md-auto col-form-label">{{'Original value'|translate}}:</label>
+              <input id="Value" name="Value" type="number"
+                     class="col-auto form-control number-input-fix-size text-end p-1"
+                     [(ngModel)]="newValuableItem.originalValue">
+              <select id="Currency" name="Currency" class="col-auto form-select currency-input-fix-size ms-2 p-1"
+                      [(ngModel)]="newValuableItem.currency">
+                <option *ngFor="let currency of currencyTypes | keyvalue"
+                        value="{{currency.key}}">{{currency.value}}</option>
+              </select>
+            </div>
+          </div>
+          <!-- Item Amortization -->
+          <div class="col-12 col-md-6 form-group mb-2">
+            <div class="row justify-content-center">
+              <label for="Rate" class="col-12 col-md-auto col-form-label">{{'Amortization rate per year'|translate}}:</label>
+              <input id="Rate" name="Rate" type="number" (change)="percentageFix($event)"
+                     class="col-auto form-control percentage-input-fix-size text-end p-1"
+                     [(ngModel)]="newValuableItem.amortizationRatePerYear">
+              <span class="col-auto col-form-label ps-1">%</span>
+            </div>
+          </div>
+          <button type="submit" [disabled]="!valuableItemForm.form.valid"
+                  class="btn btn-success offset-md-2 col-md-8">
+            {{'Add Item'|translate}}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+

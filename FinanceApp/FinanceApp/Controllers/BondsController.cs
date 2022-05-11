@@ -18,26 +18,19 @@ namespace FinanceApp.Controllers
             _bondRepository = bondRepository;
         }
 
-        // GET: api/<BondsController>/xyz
-        [HttpGet("{userId}")]
-        public async Task<IEnumerable<Bond>> GetBondsForUser(string userId)
-        {
-            return await _bondRepository.GetAllBondsForUser(userId);
-        }
-
         // GET: api/<BondsController>
         [HttpGet]
         public async Task<IEnumerable<Bond>> GetBonds()
         {
-            return await _bondRepository.GetAllBonds();
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return await _bondRepository.GetAllBondsForUser(userId);
         }
 
-        // POST api/<BondsController>
+        // POST: api/<BondsController>
         [HttpPost]
         public async Task<ActionResult<Bond>> CreateBond([FromBody] Bond bond)
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
+            bond.UserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var newBond = await _bondRepository.Create(bond);
             return CreatedAtAction(nameof(GetBonds), new {id = newBond.Id}, newBond);
         }
@@ -47,28 +40,38 @@ namespace FinanceApp.Controllers
         public async Task<ActionResult> Delete(int id)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var bond = await _bondRepository.GetBondById(id);
+            if (await _bondRepository.Delete(id, userId))
+            {
+                return NoContent();
+            }
 
-            await _bondRepository.Delete(bond.Id, userId);
-            return NoContent();
+            return BadRequest();
+        }
+        
+        // GET: api/<BondsController>/GetSummary
+        [HttpGet("GetSummary")]
+        public async Task<IEnumerable<object>> GetBondSum(DateTime from, DateTime to)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return await _bondRepository.GetSummary(userId);
         }
 
-        // GET: api/<BondsController>1//2022-05-01
-        [HttpGet("{id:int}/{date}")]
+        // GET: api/<BondsController>1/2022-05-01
+        [HttpGet("{id:int}/{date:datetime}")]
         public async Task<ActionResult<double>> CalculateYield(int id, DateTime date)
         {
             double result = 0.0;
             var bond = await _bondRepository.GetBondById(id);
-            
-            if (date < bond.PurchaseTime)
+
+            if (date < bond.MaturityDate)
             {
                 return BadRequest();
             }
 
-            TimeSpan timeSpan = date - bond.PurchaseTime;
+            TimeSpan timeSpan = date - bond.MaturityDate;
             int years = new DateTime(timeSpan.Ticks).Year - 1;
 
-            result = years * ((int)bond.ReturnInterval) * bond.BasePrice * bond.Count * bond.ReturnRate;
+            result = years * ((int) bond.ReturnInterval + 1) * bond.FaceValue * bond.Count * (bond.ReturnRate / 100);
 
             return result;
         }

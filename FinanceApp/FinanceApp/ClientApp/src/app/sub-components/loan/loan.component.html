@@ -1,0 +1,75 @@
+<div class="card extension-panel mb-2">
+  <div class="card-body p-0">
+    <div class="extension-header d-flex justify-content-between flex-grow-1 align-items-center p-1"
+         [ngClass]="{'border-open': open}" (click)="open = !open">
+      <div class="row w-100 align-items-center">
+        <div class="col-md-8 col-6 row">
+          <div class="col-md-6 col-12">
+            {{loan.name}}
+          </div>
+          <div class="col-md-6 col-12 text-md-center fst-italic">
+            {{loan.otherParty}}
+          </div>
+        </div>
+        <div class="col-md-4 col-6 text-end text-danger">{{DisplayCurrency(loan.monthlyInstallment, loan.currency)}}
+          / {{'month'|translate}}</div>
+      </div>
+      <div class="expand-button align-middle">
+        <mat-icon class="align-middle">{{open ? "expand_less" : "expand_more"}}</mat-icon>
+      </div>
+    </div>
+    <div class="extension-body p-1" *ngIf="open">
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <span class="fw-bold">{{'Total amount'|translate}}:</span> {{DisplayCurrency(loan.amount, loan.currency)}}
+        </div>
+        <div class="col-12 col-md-6">
+          <span class="fw-bold">{{'Remaining amount'|translate}}
+            :</span> {{DisplayCurrency(loan.remainingAmount, loan.currency)}}
+        </div>
+        <div class="col-12 col-md-6">
+          <span class="fw-bold">{{'Total terms'|translate}}:</span> {{loan.termInMonths}} {{'month'|translate}}
+        </div>
+        <div class="col-12 col-md-6">
+          <span class="fw-bold">{{'Remaining terms'|translate}}:</span> {{loan.remainingMonths}} {{'month'|translate}}
+        </div>
+        <div class="col-12">
+          <span class="fw-bold">{{'Interest rate'|translate}}:</span> {{loan.interestRate}}%
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header text-center">
+          <h5 class="my-auto">{{'Upcoming installment schedule'|translate}}</h5>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+              <tr>
+                <th scope="col">{{'Starting'|translate}}</th>
+                <th scope="col">{{'Interest'|translate}}</th>
+                <th scope="col">{{'Principal'|translate}}</th>
+                <th scope="col">{{'Remaining'|translate}}</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let entry of loan.loanSchedule">
+                <td>{{DisplayCurrency(entry.startingBalance, loan.currency)}}</td>
+                <td>{{DisplayCurrency(entry.interest, loan.currency)}}</td>
+                <td>{{DisplayCurrency(entry.principal, loan.currency)}}</td>
+                <td>{{DisplayCurrency(entry.endingBalance, loan.currency)}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="text-end">
+            <button class="btn btn-secondary" *ngIf="loan.remainingMonths != 0" (click)="pay()">{{'Pay next installment'|translate}}
+            </button>
+            <button class="btn btn-danger" *ngIf="loan.remainingMonths == 0" (click)="delete()">{{'Delete loan'|translate}}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

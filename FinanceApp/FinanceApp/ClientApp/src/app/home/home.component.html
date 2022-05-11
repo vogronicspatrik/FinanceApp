@@ -1,1 +1,40 @@
 <app-header [text]="'Dashboard'"></app-header>
+<div class="card mb-2">
+  <div class="card-header">
+    <h4 class="m-0">{{'Transaction category ratio'|translate}}</h4>
+  </div>
+  <div class="card-body">
+    <div class="text-center">
+      <mat-form-field appearance="outline">
+        <mat-label>{{'Transactions date range'|translate}}</mat-label>
+        <mat-date-range-input [rangePicker]="picker">
+          <input matStartDate placeholder="Start date" [(ngModel)]="filterDateStart">
+          <input matEndDate placeholder="End date" [(ngModel)]="filterDateEnd">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+      </mat-form-field>
+      <button class="btn btn-secondary ms-2 search-button" (click)="updateSearch()" [disabled]="disableSearch">
+        <mat-icon class="icon-display align-middle">search</mat-icon>
+      </button>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div>
+          <h5 class="m-0 text-center">{{'Income ratio'|translate}}</h5>
+          <h6 class="m-0 text-center" *ngIf="incomeEmpty">{{'No transaction data from this period'|translate}}</h6>
+          <div *ngIf="!incomeEmpty">
+            <div id="income-chart"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <h5 class="m-0 text-center">{{'Expense ratio'|translate}}</h5>
+        <h6 class="m-0 text-center" *ngIf="expenseEmpty">{{'No transaction data from this period'|translate}}</h6>
+        <div *ngIf="!expenseEmpty">
+          <div id="expense-chart"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

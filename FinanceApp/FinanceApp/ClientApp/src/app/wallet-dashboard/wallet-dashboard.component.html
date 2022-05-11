@@ -1,5 +1,21 @@
 <app-header [text]="'Wallets'"></app-header>
+
+<div class="card mb-2">
+  <div class="card-body">
+    <h4 class="m-0 border-bottom-dark">{{'Summary'|translate}}</h4>
+    <div class="row g-0 justify-content-center">
+      <div *ngFor="let item of summary" class="col-12 col-md-6 my-2 px-2 border-y border-bottom-dark">
+        <h5>{{'Total Balance in'|translate}} {{item.currency}}:</h5>
+        <div class="text-end">
+        <h5
+              [ngClass]="{'text-danger': item.summary < 0, 'text-success': item.summary >= 0}">{{displayValueWithCurrency(item.summary, item.currency)}}
+        </h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <app-wallet *ngFor="let wallet of wallets" [wallet]="wallet"></app-wallet>
 
-<app-header [text]="'Add'"></app-header>
 <app-add-wallet (addNewWallet)="addNewWallet($event)"></app-add-wallet>

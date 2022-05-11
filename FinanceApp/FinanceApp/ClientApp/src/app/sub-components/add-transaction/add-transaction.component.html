@@ -12,7 +12,8 @@
         <div class="row">
           <!-- Transaction Date -->
           <mat-form-field>
-            <input matInput id="Date" name="Date" [ngxMatDatetimePicker]="picker" placeholder="{{'Transaction date'|translate}}"
+            <input matInput id="Date" name="Date" [ngxMatDatetimePicker]="picker"
+                   placeholder="{{'Transaction date'|translate}}"
                    [(ngModel)]="newTransaction.dateOfTransaction">
             <mat-datepicker-toggle matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
             <ngx-mat-datetime-picker #picker></ngx-mat-datetime-picker>
@@ -35,7 +36,7 @@
           <div class="form-group mb-4 col-md-6">
             <label for="Category">{{'Category'|translate}}</label>
             <select id="Category" name="Category" class="form-select" [(ngModel)]="newTransaction.category.id">
-              <option value="0">{{'Uncategorized'|translate}}</option>
+              <option value="0">Uncategorized</option>
               <option *ngFor="let category of categories" value="{{category.id}}">{{category.name}}</option>
             </select>
           </div>

@@ -1,0 +1,113 @@
+<script src="add-valuable-item.component.ts"></script>
+<div class="card mb-2">
+  <div class="card-header d-flex d-flex justify-content-between align-items-center">
+    <h4 class="m-0">{{'New Bond'|translate}}</h4>
+    <button class="btn btn-fix-size" [ngClass]="newBondOpen ? 'btn-success' : 'btn-danger'"
+            (click)="newBondOpen = !newBondOpen">
+      <h4 class="fw-bold lh-sm my-auto">{{newBondOpen ? '+' : '-'}}</h4>
+    </button>
+  </div>
+  <div class="card-body" *ngIf="newBondOpen">
+    <form #bondForm="ngForm" (ngSubmit)="onSubmit(bondForm)">
+      <div class="form-group">
+        <div class="row">
+
+          <!-- Bond Name -->
+          <div class="form-group pb-3">
+            <label for="Name">{{'Bond name'|translate}}<span class="text-danger">*</span></label>
+            <input id="Name" name="Name" type="text" class="form-control" [(ngModel)]="newBond.bondName"
+                   #bondName="ngModel" required minlength="2"
+                   [ngClass]="{'is-invalid': bondName.touched && bondName.errors}"
+            >
+            <div [hidden]="!bondName.errors?.required" class="invalid-feedback">
+              {{'Field is required'|translate}}
+            </div>
+            <div [hidden]="!bondName.errors?.minlength" class="invalid-feedback">
+              {{'Must be at least 2 characters'|translate}}
+            </div>
+          </div>
+
+          <!-- Purchasing Date -->
+          <mat-form-field class="col-12 col-md-6">
+            <input matInput id="PurchaseDate" name="PurchaseDate" [matDatepicker]="picker1"
+                   placeholder="{{'Purchasing date'|translate}}"
+                   [(ngModel)]="newBond.purchaseDate">
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field>
+          <!-- Maturity Date -->
+          <mat-form-field class="col-12 col-md-6">
+            <input matInput id="MaturityDate" name="MaturityDate" [matDatepicker]="picker2"
+                   placeholder="{{'Maturity date'|translate}}"
+                   [(ngModel)]="newBond.maturityDate">
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+          </mat-form-field>
+
+          <!-- Bond Purchase Value -->
+          <div class="col-12 col-md-6 form-group mb-2">
+            <div class="row justify-content-center">
+              <label for="PurchaseValue" class="col-12 col-md-auto col-form-label">{{'Purchase value'|translate}}:</label>
+              <input id="PurchaseValue" name="PurchaseValue" type="number"
+                     class="col-auto form-control number-input-fix-size text-end p-1"
+                     [(ngModel)]="newBond.purchaseValue">
+              <select id="Currency2" name="Currency2" class="col-auto form-select currency-input-fix-size ms-2 p-1"
+                      [(ngModel)]="newBond.currency">
+                <option *ngFor="let currency of currencyTypes | keyvalue"
+                        value="{{currency.key}}">{{currency.value}}</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Bond Face Value -->
+          <div class="col-12 col-md-6 form-group mb-2">
+            <div class="row justify-content-center">
+              <label for="FaceValue" class="col-12 col-md-auto col-form-label">{{'Face value'|translate}}:</label>
+              <input id="FaceValue" name="FaceValue" type="number"
+                     class="col-auto form-control number-input-fix-size text-end p-1"
+                     [(ngModel)]="newBond.faceValue">
+              <select id="Currency1" name="Currency1" class="col-auto form-select currency-input-fix-size ms-2 p-1"
+                      [(ngModel)]="newBond.currency">
+                <option *ngFor="let currency of currencyTypes | keyvalue"
+                        value="{{currency.key}}">{{currency.value}}</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Bond Return Rate -->
+          <div class="col-12 col-md-6 form-group mb-2">
+            <div class="row justify-content-center">
+              <label for="ReturnRate" class="col-12 col-md-auto col-form-label">{{'Return rate per interval'|translate}}:</label>
+              <input id="ReturnRate" name="ReturnRate" type="number" (change)="percentageFix($event)"
+                     class="col-auto form-control percentage-input-fix-size text-end p-1"
+                     [(ngModel)]="newBond.returnRate">
+              <span class="col-auto col-form-label px-1">%</span>
+              <span class="align-self-center col-auto px-1">/</span>
+              <select id="RecurrencyPeriod" name="RecurrencyPeriod"
+                      class="col-auto form-select interval-input-fix-size p-1"
+                      [(ngModel)]="newBond.returnInterval">
+                <option value="HALF_YEAR">{{'semiannual' | translate}}</option>
+                <option value="YEAR">{{'annual' | translate}}</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Amount bought -->
+          <div class="col-12 col-md-6 form-group mb-2">
+            <div class="row justify-content-center">
+              <label for="Amount" class="col-12 col-md-auto col-form-label">{{'Amount bough'|translate}}:</label>
+              <input id="Amount" name="Amount" type="number"
+                     class="col-auto form-control percentage-input-fix-size text-end p-1"
+                     [(ngModel)]="newBond.count">
+            </div>
+          </div>
+          <button type="submit" [disabled]="!bondForm.form.valid"
+                  class="btn btn-success offset-md-2 col-md-8">
+            {{'Add Bond'|translate}}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+

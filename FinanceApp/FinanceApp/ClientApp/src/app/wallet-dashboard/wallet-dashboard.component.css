@@ -1,0 +1,8 @@
+.border-bottom-dark {
+  border-bottom: #5e93a5 solid 2px;
+}
+
+.border-y {
+  /*border-left: #5e93a5 solid 2px;*/
+  border-right: #5e93a5 solid 2px;
+}

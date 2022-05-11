@@ -2,7 +2,6 @@
 using FinanceApp.Models;
 using FinanceApp.Repository;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinanceApp.Controllers

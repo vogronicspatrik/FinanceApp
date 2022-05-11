@@ -1,0 +1,125 @@
+<div class="card mb-2">
+  <div class="card-header d-flex d-flex justify-content-between align-items-center">
+    <h4 class="m-0">{{'New Item'|translate}}</h4>
+    <button class="btn btn-fix-size" [ngClass]="newCashFlowItemOpen ? 'btn-success' : 'btn-danger'"
+            (click)="newCashFlowItemOpen = !newCashFlowItemOpen">
+      <h4 class="fw-bold lh-sm my-auto">{{newCashFlowItemOpen ? '+' : '-'}}</h4>
+    </button>
+  </div>
+  <div class="card-body" *ngIf="newCashFlowItemOpen">
+    <form #cashFlowItemForm="ngForm" (ngSubmit)="onSubmit(cashFlowItemForm)">
+      <div class="form-group">
+        <div class="row">
+          <div class="col-12 border-open mb-3">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="ItemType" id="ItemType1" value="Regular income"
+                     [(ngModel)]="newItemType">
+              <label class="form-check-label" for="ItemType1">{{'Regular income'|translate}}</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="ItemType" id="ItemType2" value="Fix cost"
+                     [(ngModel)]="newItemType">
+              <label class="form-check-label" for="ItemType2">{{'Fix cost'|translate}}</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="ItemType" id="ItemType3" value="Loan"
+                     [(ngModel)]="newItemType">
+              <label class="form-check-label" for="ItemType3">{{'Loan'|translate}}</label>
+            </div>
+          </div>
+          <!-- Item Name -->
+          <div class="form-group col-md-6 col-12">
+            <label for="Name">{{'Item name'|translate}}<span class="text-danger">*</span></label>
+            <input id="Name" name="Name" type="text" class="form-control" [(ngModel)]="newCashFlowItem.name"
+                   #itemName="ngModel" required minlength="2"
+                   [ngClass]="{'is-invalid': itemName.touched && itemName.errors}"
+            >
+            <div [hidden]="!itemName.errors?.required" class="invalid-feedback">
+              {{'Field is required'|translate}}
+            </div>
+            <div [hidden]="!itemName.errors?.minlength" class="invalid-feedback">
+              {{'Must be at least 2 characters'|translate}}
+            </div>
+          </div>
+          <!-- Item Other party -->
+          <div class="form-group col-md-6 col-12">
+            <label for="OtherParty">{{getOtherPartyByType(newItemType)|translate}}</label>
+            <input id="OtherParty" name="OtherParty" type="text" class="form-control"
+                   [(ngModel)]="newCashFlowItem.otherParty"
+                   #itemOtherParty="ngModel" required minlength="2"
+            >
+          </div>
+
+          <div *ngIf="newItemType == 'Loan'; then loanForm else cashFlowForm"></div>
+          <ng-template #loanForm>
+            <div class="col-12 form-group mb-2 mt-2">
+              <div class="row justify-content-center">
+                <div class="col-12 col-lg-4 form-group">
+                  <div class="row justify-content-center">
+                    <label for="LoanAmount" class="col-12 col-md-auto col-form-label">{{'Amount'|translate}}:</label>
+                    <input id="LoanAmount" name="LoanAmount" type="number"
+                           class="col-auto form-control number-input-fix-size text-end p-1"
+                           [(ngModel)]="newCashFlowItem.amount">
+                    <select id="LoanCurrency" name="LoanCurrency"
+                            class="col-auto form-select currency-input-fix-size ms-2 p-1"
+                            [(ngModel)]="newCashFlowItem.currency">
+                      <option *ngFor="let currency of currencyTypes | keyvalue"
+                              value="{{currency.key}}">{{currency.value}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4 form-group">
+                  <div class="row justify-content-center">
+                    <label for="Rate" class="col-12 col-md-auto col-form-label">{{'Interest rate'|translate}}:</label>
+                    <input id="Rate" name="Rate" type="number"
+                           class="col-auto form-control percentage-input-fix-size text-end p-1"
+                           [(ngModel)]="loanInterestRate" (change)="interestRateFix($event)">
+                    <span class="col-auto col-form-label ps-1">%</span>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4 form-group">
+                  <div class="row justify-content-center">
+                    <label for="Term" class="col-12 col-md-auto col-form-label">{{'Loan Term'|translate}}:</label>
+                    <input id="Term" name="Term" type="number"
+                           class="col-auto form-control percentage-input-fix-size text-end p-1"
+                           [(ngModel)]="loanTermInMonths">
+                    <span class="col-auto col-form-label ps-1">{{'months'|translate}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+
+          <ng-template #cashFlowForm>
+            <div class="col-12 form-group mb-2 mt-2">
+              <div class="row justify-content-center">
+                <label for="Value" class="col-12 col-md-auto col-form-label">{{'Amount'|translate}}:</label>
+                <input id="Value" name="Value" type="number"
+                       class="col-auto form-control number-input-fix-size text-end p-1"
+                       [(ngModel)]="newCashFlowItem.amount">
+                <select id="Currency" name="Currency" class="col-auto form-select currency-input-fix-size ms-2 p-1"
+                        [(ngModel)]="newCashFlowItem.currency">
+                  <option *ngFor="let currency of currencyTypes | keyvalue"
+                          value="{{currency.key}}">{{currency.value}}</option>
+                </select>
+                <span class="align-self-center col-auto">/</span>
+                <select id="RecurrencyPeriod" name="RecurrencyPeriod"
+                        class="col-auto form-select recurrency-period-input-fix-size p-1"
+                        [(ngModel)]="newCashFlowItem.recurrencyPeriod">
+                  <option *ngFor="let period of recurrencyPeriods | keyvalue"
+                          value="{{period.key}}">{{period.value | recurrencyPeriodDisplay | translate}}</option>
+                </select>
+              </div>
+            </div>
+          </ng-template>
+
+          <button type="submit" [disabled]="!cashFlowItemForm.form.valid"
+                  class="btn btn-success offset-md-2 col-md-8 mt-2">
+            {{'Add Item'|translate}}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+

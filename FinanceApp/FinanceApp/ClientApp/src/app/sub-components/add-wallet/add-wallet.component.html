@@ -18,7 +18,7 @@
                    [ngClass]="{'is-invalid': walletName.touched && walletName.errors}"
             >
             <div [hidden]="!walletName.errors?.required" class="invalid-feedback">
-              {{'Name is required'|translate}}
+              {{'Field is required'|translate}}
             </div>
             <div [hidden]="!walletName.errors?.minlength" class="invalid-feedback">
               {{'Must be at least 2 characters'|translate}}
@@ -32,7 +32,7 @@
                    [ngClass]="{'is-invalid': walletLocation.touched && walletLocation.errors}"
             >
             <div [hidden]="!walletLocation.errors?.required" class="invalid-feedback">
-              {{'Location is required'|translate}}
+              {{'Field is required'|translate}}
             </div>
             <div [hidden]="!walletLocation.errors?.minlength" class="invalid-feedback">
               {{'Must be at least 2 characters'|translate}}

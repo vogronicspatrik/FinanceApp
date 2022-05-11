@@ -25,6 +25,10 @@ namespace FinanceApp.Repository
 
         public async Task<Transaction> Create(Transaction transaction)
         {
+            if (transaction.CategoryId == 0)
+            {
+                transaction.CategoryId = null;
+            }
             _context.transactions.Add(transaction);
             await _context.SaveChangesAsync();
 

@@ -9,13 +9,19 @@
   <div class="card-body" *ngIf="newStockOpen">
     <form #stockForm="ngForm" (ngSubmit)="onSubmit(stockForm)">
       <div class="form-group">
-      <div class="row">
+        <div class="row">
           <!-- Stock Symbol -->
           <div class="form-group mb-4 col-md-6">
             <label for="Symbol">{{'Symbol'|translate}}</label>
             <input id="Symbol" name="Symbol" type="text" class="form-control" [(ngModel)]="newStock.symbol"
                    #stockSymbol="ngModel" required minlength="3" placeholder="{{'Symbol'|translate}}"
-                   [ngClass]="{'is-invalid': stockSymbol.touched && stockSymbol.errors}">
+                   [ngClass]="{'is-invalid': stockSymbol.touched && stockSymbol.errors}" (keypress)="getSymbols($event)"
+                   [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option *ngFor="let symbol of symbols" [value]="symbol">
+                {{symbol}}
+              </mat-option>
+            </mat-autocomplete>
           </div>
           <!-- Amount -->
           <div class="form-group mb-4 col-md-6">
@@ -32,19 +38,19 @@
           <!-- Add Currency Type -->
           <div class="form-group mb-4 col-md-6">
             <label for="Currency">{{'Currency type'|translate}}</label>
-            <select id="Currency" name="Currency" class="form-select" [(ngModel)]="newStock.currency">
+            <select id="Currency" name="Currency" class="form-select" [(ngModel)]="newStock.currencyCode">
               <option *ngFor="let currency of currencyTypes | keyvalue"
                       value="{{currency.key}}">{{currency.value}}</option>
             </select>
           </div>
           <!-- Purchase date -->
           <div class="text-md-center">
-            <mat-form-field appearance="outline" id="PurchaseTime" name="PurchaseTime" #purchaseTime="ngModel" [(ngModel)]="newStock.purchaseTime">
-              <mat-label>Purchase date</mat-label>
-              <input matInput [matDatepicker]="picker">
-              <mat-hint>MM/DD/YYYY</mat-hint>
-              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-datepicker #picker></mat-datepicker>
+            <mat-form-field class="col-12 col-md-6">
+              <input matInput id="PurchaseDate" name="PurchaseDate" [matDatepicker]="picker1"
+                     placeholder="{{'Purchasing date'|translate}}"
+                     [(ngModel)]="newStock.purchaseTime">
+              <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
             </mat-form-field>
           </div>
           <button type="submit" [disabled]="!stockForm.form.valid" class="btn btn-success offset-md-2 col-md-8">

@@ -20,7 +20,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 
-builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddIdentityServer()
@@ -42,7 +42,7 @@ JsonConvert.DefaultSettings = () =>
     {
         Formatting = Formatting.Indented,
         ContractResolver = new DefaultContractResolver {NamingStrategy = new CamelCaseNamingStrategy()},
-        Converters = new List<JsonConverter>() 
+        Converters = new List<JsonConverter>()
         {
             new Newtonsoft.Json.Converters.StringEnumConverter(),
             new Newtonsoft.Json.Converters.IsoDateTimeConverter()
@@ -60,7 +60,10 @@ builder.Services.AddTransient<IWalletRepository, WalletRepository>();
 builder.Services.AddTransient<ITransactionRepository, TransactionRepository>();
 builder.Services.AddTransient<IStockRepository, StockRepository>();
 builder.Services.AddTransient<ICategoryRepository, CategoryRepository>();
+builder.Services.AddTransient<IValuableAssetRepository, ValuableAssetRepository>();
 builder.Services.AddTransient<IBondRepository, BondRepository>();
+builder.Services.AddTransient<ICashFlowItemRepository, CashFlowItemRepository>();
+builder.Services.AddTransient<ILoanRepository, LoanRepository>();
 
 var app = builder.Build();
 

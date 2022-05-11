@@ -24,6 +24,20 @@ export class Currency {
 
     return transaction.type == TransactionType.Income ? "+ " + output : "- " + output;
   }
+
+  public static getCurrency(value: number, currency: CurrencyType): string {
+    let output;
+    switch (currency) {
+      case CurrencyType.EUR:
+        output = "\u20AC " + value;
+        break;
+      case CurrencyType.HUF:
+        output = value + " HUF";
+        break;
+    }
+
+    return output;
+  }
 }
 
 export enum CurrencyType {

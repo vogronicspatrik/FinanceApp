@@ -15,8 +15,14 @@ namespace FinanceApp.Data
         public DbSet<Transaction> transactions { get; set; }
 
         public DbSet<Stock> stocks { get; set; }
+        
+        public DbSet<ValuableAsset> valuableAssets { get; set; }
 
         public DbSet<Bond> bonds { get; set; }
+        
+        public DbSet<CashFlowItem> cashFlowItems { get; set; }
+        
+        public DbSet<Loan> loans { get; set; }
 
         public ApplicationDbContext(DbContextOptions options, IOptions<OperationalStoreOptions> operationalStoreOptions)
             : base(options, operationalStoreOptions)

@@ -36,8 +36,10 @@ namespace FinanceApp.Repository
             var categoryToDelete = await _context.categories.FindAsync(id);
 
             if (categoryToDelete == null || categoryToDelete.UserId != userId) return false;
-
-            //TODO: Clear it from transactions
+            
+            var transactions = _context.transactions.Where(t => t.CategoryId == id).ToList();
+            
+            transactions.ForEach(t => t.CategoryId = null);
 
             _context.categories.Remove(categoryToDelete);
             await _context.SaveChangesAsync();

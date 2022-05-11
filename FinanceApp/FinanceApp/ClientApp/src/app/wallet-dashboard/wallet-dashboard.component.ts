@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Wallet} from "../models/Wallet";
-import {CurrencyType} from "../models/Currency";
+import {Currency, CurrencyType} from "../models/Currency";
 import {Transaction} from "../models/Transaction";
 import {WalletService} from "../services/wallet.service";
 
@@ -11,13 +11,23 @@ import {WalletService} from "../services/wallet.service";
 })
 export class WalletDashboardComponent implements OnInit {
   wallets: Wallet[] = [];
+  summary: { currency: CurrencyType; summary: number }[] = [];
+
+  displayValueWithCurrency = Currency.getCurrency;
 
   constructor(private walletService: WalletService) {
   }
 
   ngOnInit(): void {
+    this.load();
+  }
+
+  load() {
     this.walletService.getWallets().subscribe(wallets => {
       this.wallets = wallets;
+    });
+    this.walletService.getSummary().subscribe(summary => {
+      this.summary = summary;
     });
   }
 

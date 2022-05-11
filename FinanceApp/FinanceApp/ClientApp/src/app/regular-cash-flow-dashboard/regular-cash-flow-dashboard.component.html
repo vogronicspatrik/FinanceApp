@@ -1,0 +1,50 @@
+<app-header [text]="'Regular incomes'"></app-header>
+<app-cash-flow-item *ngFor="let item of incomeItems" [cashFlowItem]="item" (deleteItem)="deleteItem($event)"
+                    class="mb-2"></app-cash-flow-item>
+
+<app-header [text]="'Fix costs'"></app-header>
+<app-cash-flow-item *ngFor="let item of costItems" [cashFlowItem]="item" (deleteItem)="deleteItem($event)"
+                    class="mb-2"></app-cash-flow-item>
+
+<app-header [text]="'Loans'"></app-header>
+<app-loan *ngFor="let loan of loans" [loan]="loan" (deleteLoan)="deleteLoan($event)" class="mb-2"></app-loan>
+
+<app-header [text]="'Summary'"></app-header>
+
+<div *ngFor="let currency of summary; let i = index" class="card mb-2">
+  <div class="card-body row g-0 align-items-center justify-content-between">
+    <h4 class="col-6 m-0 border-bottom-dark">{{currency.currency}}</h4>
+    <button class="col-auto btn btn-fix-size" [ngClass]="openSummary[i] ? 'btn-success' : 'btn-danger'"
+            (click)="openSummary[i] = !openSummary[i]">
+      <h4 class="fw-bold lh-sm my-auto">{{openSummary[i] ? '+' : '-'}}</h4>
+    </button>
+    <div class="" *ngIf="openSummary[i]">
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+          <tr>
+            <th scope="col">{{'Period'|translate}}</th>
+            <th scope="col">{{'Total income'|translate}}</th>
+            <th scope="col">{{'Total cost'|translate}}</th>
+            <th scope="col">{{'Difference'|translate}}</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let period of currency.periods">
+            <td>{{period.period | recurrencyPeriodDisplay | translate | titlecase}}</td>
+            <td class="text-success">{{displayValueWithCurrency(period.incomeSummary, currency.currency)}}</td>
+            <td class="text-danger">{{displayValueWithCurrency(period.expenseSummary, currency.currency)}}</td>
+            <td
+              [ngClass]="{'text-danger': period.incomeSummary - period.expenseSummary < 0, 'text-success': period.incomeSummary - period.expenseSummary >= 0}"
+            >{{displayValueWithCurrency(period.incomeSummary - period.expenseSummary, currency.currency)}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-header [text]="'Add Item'"></app-header>
+<app-add-cash-flow-item (updateLoans)="updateLoans($event)"
+                        (updateItems)="updateItems($event)"></app-add-cash-flow-item>

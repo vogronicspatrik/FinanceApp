@@ -1,0 +1,60 @@
+<div class="card extension-panel mb-2">
+  <div class="card-body p-0">
+    <div class="extension-header d-flex justify-content-between flex-grow-1 align-items-center p-1"
+         [ngClass]="{'border-open': open}" (click)="open = !open">
+      <div class="row w-100 align-items-center">
+        <div class="col-md-8 col-6 row">
+          <div class="col-md-6 col-12">
+            {{bond.bondName}}
+          </div>
+          <div class="col-md-6 col-12 text-md-center fst-italic">
+            {{bond.maturityDate | date: "yyyy/MM/dd"}}
+          </div>
+        </div>
+        <div
+          class="col-md-4 col-6 text-end">{{displayValueWithCurrency(bond.yield, bond.currency)}}
+          / {{bond.returnInterval | returnIntervalDisplay | translate}}</div>
+      </div>
+      <div class="expand-button align-middle">
+        <mat-icon class="align-middle">{{open ? "expand_less" : "expand_more"}}</mat-icon>
+      </div>
+    </div>
+    <div class="extension-body p-1" *ngIf="open">
+      <div class="row">
+        <div class="col-12 col-md-10">
+          <div class="row align-items-center text-center">
+            <div class="col-12 col-md-5">
+          <span class="fw-bold">{{'Amount owned'|translate}}
+            :</span> {{bond.count}}
+            </div>
+            <div class="col-12 col-md-5">
+          <span class="fw-bold">{{'Face value'|translate}}
+            :</span> {{displayValueWithCurrency(bond.faceValue, bond.currency)}}
+            </div>
+            <div class="col-12 col-md-5">
+          <span class="fw-bold">{{'Return rate'|translate}}
+            :</span> {{bond.returnRate}}%
+            </div>
+            <div class="col-12 col-md-5">
+          <span class="fw-bold">{{'Purchase value'|translate}}
+            :</span> {{displayValueWithCurrency(bond.purchaseValue, bond.currency)}}
+            </div>
+            <div class="row align-items-center text-center">
+              <div class="col-12 col-md-5">
+          <span class="fw-bold">{{'Next payout'|translate}}
+            :</span> {{bond.maturityDate| date: "yyyy/MM/dd"}}
+              </div>
+              <div class="col-12 col-md-5">
+          <span class="fw-bold">{{'Original purchase'|translate}}
+            :</span> {{bond.purchaseDate| date: "yyyy/MM/dd"}}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-2 align-self-center">
+          <button class="btn btn-danger" (click)="delete()">{{'Delete'|translate}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -7,7 +7,7 @@ export class Stock {
     this.userId = userId;
     this.symbol = symbol;
     this.purchaseTime = purchaseTime;
-    this.currency = currency;
+    this.currencyCode = currency;
     this.valueAtPurchase = valueAtPurchase;
     this.amount = amount;
   }
@@ -16,7 +16,7 @@ export class Stock {
   userId: string;
   symbol: string;
   purchaseTime: string;
-  currency: CurrencyType;
+  currencyCode: CurrencyType;
   valueAtPurchase: number;
   amount: number;
 }

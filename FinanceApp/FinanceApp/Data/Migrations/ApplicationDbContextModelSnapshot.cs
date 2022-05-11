@@ -236,9 +236,6 @@ namespace FinanceApp.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<double>("BasePrice")
-                        .HasColumnType("float");
-
                     b.Property<string>("BondName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -246,8 +243,20 @@ namespace FinanceApp.Data.Migrations
                     b.Property<int>("Count")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("PurchaseTime")
+                    b.Property<int>("Currency")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FaceValue")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("MaturityDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("PurchaseDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PurchaseValue")
+                        .HasColumnType("int");
 
                     b.Property<int>("ReturnInterval")
                         .HasColumnType("int");
@@ -256,12 +265,51 @@ namespace FinanceApp.Data.Migrations
                         .HasColumnType("float");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("bonds");
+                });
+
+            modelBuilder.Entity("FinanceApp.Models.CashFlowItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Currency")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OtherParty")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RecurrencyPeriod")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("cashFlowItems");
                 });
 
             modelBuilder.Entity("FinanceApp.Models.Category", b =>
@@ -288,6 +336,50 @@ namespace FinanceApp.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("categories");
+                });
+
+            modelBuilder.Entity("FinanceApp.Models.Loan", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
+
+                    b.Property<int>("Currency")
+                        .HasColumnType("int");
+
+                    b.Property<double>("InterestRate")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OtherParty")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("RemainingAmount")
+                        .HasColumnType("float");
+
+                    b.Property<int>("RemainingMonths")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TermInMonths")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("loans");
                 });
 
             modelBuilder.Entity("FinanceApp.Models.Stock", b =>
@@ -330,7 +422,7 @@ namespace FinanceApp.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("CategoryId")
+                    b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DateOfTransaction")
@@ -359,6 +451,40 @@ namespace FinanceApp.Data.Migrations
                     b.HasIndex("WalletId");
 
                     b.ToTable("transactions");
+                });
+
+            modelBuilder.Entity("FinanceApp.Models.ValuableAsset", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("AmortizationRatePerYear")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Currency")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateOfPurchasing")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OriginalValue")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("valuableAssets");
                 });
 
             modelBuilder.Entity("FinanceApp.Models.Wallet", b =>
@@ -536,7 +662,34 @@ namespace FinanceApp.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("FinanceApp.Models.Bond", b =>
+                {
+                    b.HasOne("FinanceApp.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("FinanceApp.Models.CashFlowItem", b =>
+                {
+                    b.HasOne("FinanceApp.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("FinanceApp.Models.Category", b =>
+                {
+                    b.HasOne("FinanceApp.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("FinanceApp.Models.Loan", b =>
                 {
                     b.HasOne("FinanceApp.Models.ApplicationUser", "User")
                         .WithMany()
@@ -549,9 +702,7 @@ namespace FinanceApp.Data.Migrations
                 {
                     b.HasOne("FinanceApp.Models.Category", "Category")
                         .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId");
 
                     b.HasOne("FinanceApp.Models.Wallet", "Wallet")
                         .WithMany("Transactions")
@@ -562,6 +713,15 @@ namespace FinanceApp.Data.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("Wallet");
+                });
+
+            modelBuilder.Entity("FinanceApp.Models.ValuableAsset", b =>
+                {
+                    b.HasOne("FinanceApp.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("FinanceApp.Models.Wallet", b =>

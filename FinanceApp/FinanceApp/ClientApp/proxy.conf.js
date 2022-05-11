@@ -17,7 +17,11 @@ const PROXY_CONFIG = [
       "/api/wallets",
       "/api/transactions",
       "/api/stocks",
-      "/api/alpha"
+      "/api/alpha",
+      "/api/valuableassets",
+      "/api/cashflowitems",
+      "/api/loans",
+      "/api/bonds"
    ],
     target: target,
     secure: false

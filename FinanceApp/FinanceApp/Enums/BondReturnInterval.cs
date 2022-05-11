@@ -2,7 +2,7 @@
 {
     public enum BondReturnInterval
     {
-        YEAR = 1,
-        HALF_YEAR = 2
+        YEAR = 0,
+        HALF_YEAR = 1
     }
 }
