@@ -14,7 +14,7 @@ export class AddStockComponent implements OnInit {
   @ViewChild('stockForm', {static: false}) form: any;
   @Output() addNewStock = new EventEmitter<Stock>();
 
-  newStock: Stock = new Stock('', '', '', '', CurrencyType.EUR, 0, 0);
+  newStock: Stock = new Stock('', '', '', '', CurrencyType.EUR, 0, 0, 0);
   newStockOpen: boolean = false;
   currencyTypes = CurrencyType;
 
@@ -30,7 +30,7 @@ export class AddStockComponent implements OnInit {
     this.stockService.addStock(this.newStock).subscribe(stock => {
       this.addNewStock.emit(stock);
       stockForm.resetForm();
-      this.newStock = new Stock('', '', '', '', CurrencyType.EUR, 0, 0);
+      this.newStock = new Stock('', '', '', '', CurrencyType.EUR, 0, 0, 0);
     });
   }
 

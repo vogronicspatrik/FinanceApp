@@ -4,10 +4,13 @@
          [ngClass]="{'border-open': open}" (click)="open = !open">
       <div class="row w-100 align-items-center">
         <div class="col-md-8 col-6 row">
-          <div class="col-md-6 col-12">
+          <div class="col-md-4 col-12">
             {{stock?.symbol}}
           </div>
-          <div class="col-md-6 col-12 text-md-center fst-italic">
+          <div class="col-md-4 col-12 fst-italic">
+            {{stock?.purchaseTime | date:'yyyy/MM/dd'}}
+          </div>
+          <div class="col-md-4 col-12 text-md-center fst-italic">
             x{{stock?.amount}}
           </div>
         </div>
@@ -37,7 +40,7 @@
         <div class="row">
           <div class="col-md-6 col-12 align-self-center row g-0">
             <span class="col-md-6 h6">{{'Current value'|translate}}:</span>
-            <span class="col-md-6 text-end text-md-start">{{displayValueWithCurrency(currentPrice, stock.currencyCode)}}
+            <span class="col-md-6 text-end text-md-start">{{displayValueWithCurrency(stock.currentValue, stock.currencyCode)}}
               </span>
           </div>
           <div class="col-md-6 col-12 align-self-center row g-0">

@@ -21,7 +21,7 @@ namespace FinanceApp.Repository
             return stock;
         }
 
-        public async Task Delete(int Id)
+        public async Task Delete(int Id, string userId)
         {
             var stockToDelete = await _context.stocks.FindAsync(Id);
             _context.stocks.Remove(stockToDelete);
@@ -33,12 +33,19 @@ namespace FinanceApp.Repository
             return await _context.stocks.ToListAsync();
         }
 
+        public async Task<IEnumerable<Stock>> GetAllStocksForUser(string userId)
+        {
+            return await _context.stocks
+            .Where(stock => stock.UserId == userId)
+            .ToListAsync();
+        }
+
         public async Task<Stock> GetStockById(int Id)
         {
             return await _context.stocks.FindAsync(Id);
         }
 
-        public async Task Update(Stock stock)
+        public async Task Update(Stock stock, string userId)
         {
             _context.Entry(stock).State = EntityState.Modified;
             await _context.SaveChangesAsync();
