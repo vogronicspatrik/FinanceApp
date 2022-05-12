@@ -1,9 +1,9 @@
 <div class="card">
   <div class="card-header d-flex d-flex justify-content-between align-items-center">
     <h4 class="m-0">{{'New Wallet'|translate}}</h4>
-    <button class="btn btn-fix-size" [ngClass]="newWalletOpen ? 'btn-success' : 'btn-danger'"
+    <button class="btn btn-fix-size" [ngClass]="newWalletOpen ? 'btn-danger' : 'btn-success'"
             (click)="newWalletOpen = !newWalletOpen">
-      <h4 class="fw-bold lh-sm my-auto">{{newWalletOpen ? '+' : '-'}}</h4>
+      <h4 class="fw-bold lh-sm my-auto">{{newWalletOpen ? '-' : '+'}}</h4>
     </button>
   </div>
   <div class="card-body" *ngIf="newWalletOpen">
@@ -14,7 +14,7 @@
           <div class="form-group mb-4 col-md-6">
             <label for="Name">{{'Wallet Name'|translate}}<span class="text-danger">*</span></label>
             <input id="Name" name="Name" type="text" class="form-control" [(ngModel)]="newWallet.type"
-                   #walletName="ngModel" required minlength="2" placeholder="{{'My bank account'|translate}}"
+                   #walletName="ngModel" required minlength="2"
                    [ngClass]="{'is-invalid': walletName.touched && walletName.errors}"
             >
             <div [hidden]="!walletName.errors?.required" class="invalid-feedback">
@@ -28,7 +28,7 @@
           <div class="form-group mb-4 col-md-6">
             <label for="Location">{{'Location'|translate}}<span class="text-danger">*</span></label>
             <input id="Location" name="Location" type="text" class="form-control" [(ngModel)]="newWallet.location"
-                   #walletLocation="ngModel" required minlength="2" placeholder="{{'My bank'|translate}}"
+                   #walletLocation="ngModel" required minlength="2"
                    [ngClass]="{'is-invalid': walletLocation.touched && walletLocation.errors}"
             >
             <div [hidden]="!walletLocation.errors?.required" class="invalid-feedback">

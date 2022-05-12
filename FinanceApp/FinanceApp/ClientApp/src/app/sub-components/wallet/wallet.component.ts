@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Wallet} from "../../models/Wallet";
-import {Currency} from "../../models/Currency";
 
 @Component({
   selector: 'app-wallet',
@@ -10,8 +9,6 @@ import {Currency} from "../../models/Currency";
 export class WalletComponent implements OnInit {
   @Input() wallet!: Wallet;
   open: boolean = false;
-  walletGetBalance = Currency.getBalance;
-  transactionGetPrice = Currency.getPrice;
 
   constructor() {
   }

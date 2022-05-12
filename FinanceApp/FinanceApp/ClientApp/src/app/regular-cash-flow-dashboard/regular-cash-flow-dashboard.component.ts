@@ -3,8 +3,7 @@ import {CashFlowItemService} from "../services/cash-flow-item.service";
 import {CashFlowDirection, CashFlowItem} from "../models/CashFlowItem";
 import {LoanService} from "../services/loan.service";
 import {Loan} from "../models/Loan";
-import {Currency, CurrencyType} from "../models/Currency";
-import {BondReturnInterval} from "../models/Bond";
+import {CurrencyType} from "../models/Currency";
 import {RecurrencyPeriodType} from "../models/RecurrencyPeriod";
 
 @Component({
@@ -13,15 +12,12 @@ import {RecurrencyPeriodType} from "../models/RecurrencyPeriod";
   styleUrls: ['./regular-cash-flow-dashboard.component.css']
 })
 export class RegularCashFlowDashboardComponent implements OnInit {
-
   incomeItems: CashFlowItem[] = [];
   costItems: CashFlowItem[] = [];
   loans: Loan[] = [];
 
   summary: { currency: CurrencyType; periods: { period: RecurrencyPeriodType, incomeSummary: number, expenseSummary: number }[] }[] = [];
-
   openSummary: boolean[] = [];
-  displayValueWithCurrency = Currency.getCurrency;
 
   constructor(private cashFlowItemService: CashFlowItemService,
               private loanService: LoanService) {

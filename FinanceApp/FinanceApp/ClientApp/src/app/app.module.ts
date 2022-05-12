@@ -43,6 +43,7 @@ import {ReturnIntervalPipe} from "./models/Bond";
 import {AddStockComponent} from './sub-components/add-stock/add-stock.component';
 import {StockComponent} from './sub-components/stock/stock.component';
 import {StockDashboardComponent} from './stock-dashboard/stock-dashboard.component';
+import { ValueWithCurrencyComponent } from './sub-components/value-with-currency/value-with-currency.component';
 
 
 @NgModule({
@@ -72,7 +73,8 @@ import {StockDashboardComponent} from './stock-dashboard/stock-dashboard.compone
     BondComponent,
     AddStockComponent,
     StockDashboardComponent,
-    StockComponent
+    StockComponent,
+    ValueWithCurrencyComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),

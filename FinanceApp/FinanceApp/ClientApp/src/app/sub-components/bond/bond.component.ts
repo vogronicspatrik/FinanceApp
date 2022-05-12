@@ -1,6 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Bond} from "../../models/Bond";
-import {Currency} from "../../models/Currency";
 import {BondService} from "../../services/bond.service";
 
 @Component({
@@ -12,7 +11,6 @@ export class BondComponent implements OnInit {
   @Input() bond!: Bond;
   @Output() deleteBond = new EventEmitter<any>();
   open: boolean = false;
-  displayValueWithCurrency = Currency.getCurrency;
 
   constructor(private bondService: BondService) {
   }

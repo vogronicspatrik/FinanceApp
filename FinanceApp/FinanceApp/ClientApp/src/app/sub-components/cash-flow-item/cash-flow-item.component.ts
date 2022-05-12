@@ -1,5 +1,4 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Currency} from "../../models/Currency";
 import {CashFlowItem} from "../../models/CashFlowItem";
 import {CashFlowItemService} from "../../services/cash-flow-item.service";
 
@@ -11,7 +10,6 @@ import {CashFlowItemService} from "../../services/cash-flow-item.service";
 export class CashFlowItemComponent implements OnInit {
   @Input() cashFlowItem!: CashFlowItem;
   @Output() deleteItem = new EventEmitter<string>();
-  displayValueWithCurrency = Currency.getCurrency;
 
   constructor(private cashFlowItemService: CashFlowItemService) {
   }

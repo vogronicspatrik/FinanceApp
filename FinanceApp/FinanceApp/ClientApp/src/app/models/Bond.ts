@@ -1,6 +1,5 @@
 import {CurrencyType} from "./Currency";
 import {Pipe, PipeTransform} from "@angular/core";
-import {RecurrencyPeriodType} from "./RecurrencyPeriod";
 
 export class Bond {
   constructor(id: string, bondName: string, purchaseDate: string, faceValue: number, purchaseValue: number, currency: CurrencyType, maturityDate: string, count: number, returnRate: number, returnInterval: BondReturnInterval) {

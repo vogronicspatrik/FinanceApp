@@ -12,7 +12,10 @@
           </div>
         </div>
         <div
-          class="col-md-4 col-6 text-end">{{displayValueWithCurrency(valuableItem.currentValue, valuableItem.currency)}}</div>
+          class="col-md-4 col-6 text-end">
+          <app-value-with-currency [value]="valuableItem.currentValue"
+                                   [currency]="valuableItem.currency"></app-value-with-currency>
+        </div>
       </div>
       <div class="expand-button align-middle">
         <mat-icon class="align-middle">{{open ? "expand_less" : "expand_more"}}</mat-icon>
@@ -21,12 +24,13 @@
     <div class="extension-body p-1" *ngIf="open">
       <div class="row align-items-center text-center">
         <div class="col-12 col-md-5">
-          <span class="fw-bold">{{'Original value'|translate}}
-            :</span> {{displayValueWithCurrency(valuableItem.originalValue, valuableItem.currency)}}
+          <span class="fw-bold">{{'Original value'|translate}}: </span>
+          <app-value-with-currency [value]="valuableItem.originalValue"
+                                   [currency]="valuableItem.currency"></app-value-with-currency>
         </div>
         <div class="col-12 col-md-5">
-          <span class="fw-bold">{{'Amortization rate per year'|translate}}
-            :</span> {{valuableItem.amortizationRatePerYear}}%
+          <span class="fw-bold">{{'Amortization rate per year'|translate}}: </span>
+          {{valuableItem.amortizationRatePerYear}}%
         </div>
         <div class="col-12 col-md-2">
           <button class="btn btn-danger" (click)="deleteItem(valuableItem.id)">{{'Delete'|translate}}</button>

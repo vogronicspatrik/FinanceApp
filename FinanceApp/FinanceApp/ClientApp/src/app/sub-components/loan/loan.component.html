@@ -11,7 +11,9 @@
             {{loan.otherParty}}
           </div>
         </div>
-        <div class="col-md-4 col-6 text-end text-danger">{{DisplayCurrency(loan.monthlyInstallment, loan.currency)}}
+        <div class="col-md-4 col-6 text-end text-danger">
+          <app-value-with-currency [value]="loan.monthlyInstallment"
+                                   [currency]="loan.currency"></app-value-with-currency>
           / {{'month'|translate}}</div>
       </div>
       <div class="expand-button align-middle">
@@ -21,20 +23,21 @@
     <div class="extension-body p-1" *ngIf="open">
       <div class="row">
         <div class="col-12 col-md-6">
-          <span class="fw-bold">{{'Total amount'|translate}}:</span> {{DisplayCurrency(loan.amount, loan.currency)}}
+          <span class="fw-bold">{{'Total amount'|translate}}: </span>
+          <app-value-with-currency [value]="loan.amount" [currency]="loan.currency"></app-value-with-currency>
         </div>
         <div class="col-12 col-md-6">
-          <span class="fw-bold">{{'Remaining amount'|translate}}
-            :</span> {{DisplayCurrency(loan.remainingAmount, loan.currency)}}
+          <span class="fw-bold">{{'Remaining amount'|translate}}: </span>
+          <app-value-with-currency [value]="loan.remainingAmount" [currency]="loan.currency"></app-value-with-currency>
         </div>
         <div class="col-12 col-md-6">
-          <span class="fw-bold">{{'Total terms'|translate}}:</span> {{loan.termInMonths}} {{'month'|translate}}
+          <span class="fw-bold">{{'Total terms'|translate}}: </span>{{loan.termInMonths}} {{'month'|translate}}
         </div>
         <div class="col-12 col-md-6">
-          <span class="fw-bold">{{'Remaining terms'|translate}}:</span> {{loan.remainingMonths}} {{'month'|translate}}
+          <span class="fw-bold">{{'Remaining terms'|translate}}: </span>{{loan.remainingMonths}} {{'month'|translate}}
         </div>
         <div class="col-12">
-          <span class="fw-bold">{{'Interest rate'|translate}}:</span> {{loan.interestRate}}%
+          <span class="fw-bold">{{'Interest rate'|translate}}: </span>{{loan.interestRate}}%
         </div>
       </div>
       <div class="card">
@@ -54,18 +57,32 @@
               </thead>
               <tbody>
               <tr *ngFor="let entry of loan.loanSchedule">
-                <td>{{DisplayCurrency(entry.startingBalance, loan.currency)}}</td>
-                <td>{{DisplayCurrency(entry.interest, loan.currency)}}</td>
-                <td>{{DisplayCurrency(entry.principal, loan.currency)}}</td>
-                <td>{{DisplayCurrency(entry.endingBalance, loan.currency)}}</td>
+                <td>
+                  <app-value-with-currency [value]="entry.startingBalance"
+                                           [currency]="loan.currency"></app-value-with-currency>
+                </td>
+                <td>
+                  <app-value-with-currency [value]="entry.interest"
+                                           [currency]="loan.currency"></app-value-with-currency>
+                </td>
+                <td>
+                  <app-value-with-currency [value]="entry.principal"
+                                           [currency]="loan.currency"></app-value-with-currency>
+                </td>
+                <td>
+                  <app-value-with-currency [value]="entry.endingBalance"
+                                           [currency]="loan.currency"></app-value-with-currency>
+                </td>
               </tr>
               </tbody>
             </table>
           </div>
           <div class="text-end">
-            <button class="btn btn-secondary" *ngIf="loan.remainingMonths != 0" (click)="pay()">{{'Pay next installment'|translate}}
+            <button class="btn btn-secondary" *ngIf="loan.remainingMonths != 0"
+                    (click)="pay()">{{'Pay next installment'|translate}}
             </button>
-            <button class="btn btn-danger" *ngIf="loan.remainingMonths == 0" (click)="delete()">{{'Delete loan'|translate}}
+            <button class="btn btn-danger" *ngIf="loan.remainingMonths == 0"
+                    (click)="delete()">{{'Delete loan'|translate}}
             </button>
           </div>
         </div>

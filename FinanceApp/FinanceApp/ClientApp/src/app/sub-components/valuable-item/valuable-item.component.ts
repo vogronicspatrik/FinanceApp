@@ -1,5 +1,4 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Currency} from "../../models/Currency";
 import {ValuableItem} from "../../models/ValuableItem";
 import {ValuableItemService} from "../../services/valuable-item.service";
 
@@ -12,7 +11,6 @@ export class ValuableItemComponent implements OnInit {
   @Input() valuableItem!: ValuableItem;
   @Output() updateItems = new EventEmitter<any>();
   open: boolean = false;
-  displayValueWithCurrency = Currency.getCurrency;
 
   constructor(private valuableItemService: ValuableItemService) {
   }

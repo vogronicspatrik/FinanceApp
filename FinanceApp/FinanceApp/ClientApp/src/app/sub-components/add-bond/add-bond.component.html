@@ -2,9 +2,9 @@
 <div class="card mb-2">
   <div class="card-header d-flex d-flex justify-content-between align-items-center">
     <h4 class="m-0">{{'New Bond'|translate}}</h4>
-    <button class="btn btn-fix-size" [ngClass]="newBondOpen ? 'btn-success' : 'btn-danger'"
+    <button class="btn btn-fix-size" [ngClass]="newBondOpen ? 'btn-danger' : 'btn-success'"
             (click)="newBondOpen = !newBondOpen">
-      <h4 class="fw-bold lh-sm my-auto">{{newBondOpen ? '+' : '-'}}</h4>
+      <h4 class="fw-bold lh-sm my-auto">{{newBondOpen ? '-' : '+'}}</h4>
     </button>
   </div>
   <div class="card-body" *ngIf="newBondOpen">

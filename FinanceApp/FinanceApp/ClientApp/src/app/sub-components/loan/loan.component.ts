@@ -1,6 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Loan} from "../../models/Loan";
-import {Currency} from "../../models/Currency";
 import {LoanService} from "../../services/loan.service";
 
 @Component({
@@ -12,7 +11,6 @@ export class LoanComponent implements OnInit {
   @Input() loan!: Loan;
   @Output() deleteLoan = new EventEmitter<string>();
   open: boolean = false;
-  DisplayCurrency = Currency.getCurrency;
 
   constructor(private loanService: LoanService) {
   }

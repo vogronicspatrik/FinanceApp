@@ -12,7 +12,9 @@
           </div>
         </div>
         <div
-          class="col-md-4 col-6 text-end">{{displayValueWithCurrency(bond.yield, bond.currency)}}
+          class="col-md-4 col-6 text-end">
+          <app-value-with-currency [value]="bond.yield"
+                                   [currency]="bond.currency"></app-value-with-currency>
           / {{bond.returnInterval | returnIntervalDisplay | translate}}</div>
       </div>
       <div class="expand-button align-middle">
@@ -24,20 +26,19 @@
         <div class="col-12 col-md-10">
           <div class="row align-items-center text-center">
             <div class="col-12 col-md-5">
-          <span class="fw-bold">{{'Amount owned'|translate}}
-            :</span> {{bond.count}}
+              <span class="fw-bold">{{'Amount owned'|translate}}: </span>{{bond.count | number}}
             </div>
             <div class="col-12 col-md-5">
-          <span class="fw-bold">{{'Face value'|translate}}
-            :</span> {{displayValueWithCurrency(bond.faceValue, bond.currency)}}
+              <span class="fw-bold">{{'Face value'|translate}}: </span>
+              <app-value-with-currency [value]="bond.faceValue" [currency]="bond.currency"></app-value-with-currency>
             </div>
             <div class="col-12 col-md-5">
-          <span class="fw-bold">{{'Return rate'|translate}}
-            :</span> {{bond.returnRate}}%
+              <span class="fw-bold">{{'Return rate'|translate}}: </span>{{bond.returnRate}}%
             </div>
             <div class="col-12 col-md-5">
-          <span class="fw-bold">{{'Purchase value'|translate}}
-            :</span> {{displayValueWithCurrency(bond.purchaseValue, bond.currency)}}
+              <span class="fw-bold">{{'Purchase value'|translate}}: </span>
+              <app-value-with-currency [value]="bond.purchaseValue"
+                                       [currency]="bond.currency"></app-value-with-currency>
             </div>
             <div class="row align-items-center text-center">
               <div class="col-12 col-md-5">

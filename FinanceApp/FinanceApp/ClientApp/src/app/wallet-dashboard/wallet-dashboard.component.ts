@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Wallet} from "../models/Wallet";
-import {Currency, CurrencyType} from "../models/Currency";
-import {Transaction} from "../models/Transaction";
+import {CurrencyType} from "../models/Currency";
 import {WalletService} from "../services/wallet.service";
 
 @Component({
@@ -12,8 +11,6 @@ import {WalletService} from "../services/wallet.service";
 export class WalletDashboardComponent implements OnInit {
   wallets: Wallet[] = [];
   summary: { currency: CurrencyType; summary: number }[] = [];
-
-  displayValueWithCurrency = Currency.getCurrency;
 
   constructor(private walletService: WalletService) {
   }

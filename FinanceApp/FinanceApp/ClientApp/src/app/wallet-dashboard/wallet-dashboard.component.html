@@ -8,7 +8,8 @@
         <h5>{{'Total Balance in'|translate}} {{item.currency}}:</h5>
         <div class="text-end">
         <h5
-              [ngClass]="{'text-danger': item.summary < 0, 'text-success': item.summary >= 0}">{{displayValueWithCurrency(item.summary, item.currency)}}
+              [ngClass]="{'text-danger': item.summary < 0, 'text-success': item.summary >= 0}">
+          <app-value-with-currency [value]="item.summary" [currency]="item.currency"></app-value-with-currency>
         </h5>
         </div>
       </div>

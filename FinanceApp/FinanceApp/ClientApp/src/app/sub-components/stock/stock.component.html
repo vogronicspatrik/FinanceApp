@@ -15,7 +15,10 @@
           </div>
         </div>
         <div class="col-md-3 col-12 text-end"
-             [ngClass]="{'text-danger': currentTotalValue < totalValueAtPurchase, 'text-success': currentTotalValue >= totalValueAtPurchase}">{{displayValueWithCurrency(currentTotalValue, stock.currencyCode)}}</div>
+             [ngClass]="{'text-danger': currentTotalValue < totalValueAtPurchase, 'text-success': currentTotalValue >= totalValueAtPurchase}">
+          <app-value-with-currency [value]="currentTotalValue"
+                                   [currency]="stock.currencyCode"></app-value-with-currency>
+        </div>
       </div>
       <div class="expand-button align-middle">
         <mat-icon class="align-middle">{{open ? "expand_less" : "expand_more"}}</mat-icon>
@@ -26,27 +29,33 @@
         <div class="row">
           <div class="col-md-6 col-12 align-self-center row g-0">
             <span class="col-md-6 h6">{{'Value at purchase'|translate}}:</span>
-            <span
-              class="col-md-6 text-end text-md-start">{{displayValueWithCurrency(stock.valueAtPurchase, stock.currencyCode)}}
-              </span>
+            <span class="col-md-6 text-end text-md-start">
+              <app-value-with-currency [value]="stock.valueAtPurchase"
+                                       [currency]="stock.currencyCode"></app-value-with-currency>
+            </span>
           </div>
           <div class="col-md-6 col-12 align-self-center row g-0">
             <span class="col-md-6 h6">{{'Total value at purchase'|translate}}:</span>
-            <span
-              class="col-md-6 text-end text-md-start">{{displayValueWithCurrency(totalValueAtPurchase, stock.currencyCode)}}
-              </span>
+            <span class="col-md-6 text-end text-md-start">
+              <app-value-with-currency [value]="totalValueAtPurchase"
+                                       [currency]="stock.currencyCode"></app-value-with-currency>
+            </span>
           </div>
         </div>
         <div class="row">
           <div class="col-md-6 col-12 align-self-center row g-0">
             <span class="col-md-6 h6">{{'Current value'|translate}}:</span>
-            <span class="col-md-6 text-end text-md-start">{{displayValueWithCurrency(stock.currentValue, stock.currencyCode)}}
-              </span>
+            <span class="col-md-6 text-end text-md-start">
+              <app-value-with-currency [value]="stock.currentValue"
+                                       [currency]="stock.currencyCode"></app-value-with-currency>
+            </span>
           </div>
           <div class="col-md-6 col-12 align-self-center row g-0">
             <span class="col-md-6 h6">{{'Current total value'|translate}}:</span>
             <span class="col-md-6 text-end text-md-start"
-                  [ngClass]="{'text-danger': totalValueAtPurchase > currentTotalValue, 'text-success': totalValueAtPurchase <= currentTotalValue}">{{displayValueWithCurrency(currentTotalValue, stock.currencyCode)}}
+                  [ngClass]="{'text-danger': totalValueAtPurchase > currentTotalValue, 'text-success': totalValueAtPurchase <= currentTotalValue}">
+              <app-value-with-currency [value]="currentTotalValue"
+                                       [currency]="stock.currencyCode"></app-value-with-currency>
               </span>
           </div>
         </div>

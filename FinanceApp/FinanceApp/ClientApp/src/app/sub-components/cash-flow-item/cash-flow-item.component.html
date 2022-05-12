@@ -9,7 +9,9 @@
           </div>
         </div>
         <div class="col-md-4 col-6 text-end"
-             [ngClass]="cashFlowItem.type == 'COST' ? 'text-danger' : 'text-success'">{{displayValueWithCurrency(cashFlowItem.amount, cashFlowItem.currency)}}
+             [ngClass]="cashFlowItem.type == 'COST' ? 'text-danger' : 'text-success'">
+          <app-value-with-currency [value]="cashFlowItem.amount"
+                                   [currency]="cashFlowItem.currency"></app-value-with-currency>
           / {{cashFlowItem.recurrencyPeriod | recurrencyPeriodDisplay | translate}}</div>
       </div>
       <div class="col-auto align-self-center">

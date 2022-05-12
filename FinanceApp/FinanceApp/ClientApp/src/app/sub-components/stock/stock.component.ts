@@ -1,6 +1,5 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {Stock} from "../../models/Stock";
-import {Currency} from "../../models/Currency";
 
 @Component({
   selector: 'app-stock',
@@ -13,13 +12,12 @@ export class StockComponent implements OnInit {
   currentTotalValue: number = 0.0;
   currentPrice = 0.0;
   totalValueAtPurchase = 0.0;
-  displayValueWithCurrency = Currency.getCurrency;
 
   constructor() {
   }
 
   ngOnInit(): void {
-    this.currentTotalValue = this.stock?.currentValue * this.stock?.amount;
-    this.totalValueAtPurchase = this.stock?.valueAtPurchase * this.stock?.amount;
+    this.currentTotalValue = Math.round(this.stock?.currentValue * this.stock?.amount);
+    this.totalValueAtPurchase = Math.round(this.stock?.valueAtPurchase * this.stock?.amount);
   }
 }

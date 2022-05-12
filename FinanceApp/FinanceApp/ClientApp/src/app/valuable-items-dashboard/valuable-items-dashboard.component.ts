@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ValuableItem} from "../models/ValuableItem";
 import {ValuableItemService} from "../services/valuable-item.service";
-import {Currency, CurrencyType} from "../models/Currency";
+import {CurrencyType} from "../models/Currency";
 
 @Component({
   selector: 'app-valuable-items-dashboard',
@@ -10,10 +10,7 @@ import {Currency, CurrencyType} from "../models/Currency";
 })
 export class ValuableItemsDashboardComponent implements OnInit {
   valuableItems: ValuableItem[] = [];
-
   summary: { currency: CurrencyType, withAmortization: number, withoutAmortization: number }[] = [];
-
-  displayValueWithCurrency = Currency.getCurrency;
 
   constructor(private valuableItemService: ValuableItemService) {
   }

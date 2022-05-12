@@ -1,11 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {Wallet} from "../models/Wallet";
-import {Currency, CurrencyType} from "../models/Currency";
+import {CurrencyType} from "../models/Currency";
 import {FormControl, FormGroup, NgForm} from "@angular/forms";
-import {TransactionType} from "../models/Transaction";
 import {WalletService} from "../services/wallet.service";
-import {from} from "rxjs";
 
 @Component({
   selector: 'app-wallet-transactions',
@@ -13,9 +11,6 @@ import {from} from "rxjs";
   styleUrls: ['./wallet-transactions.component.css']
 })
 export class WalletTransactionsComponent implements OnInit {
-  walletGetBalance = Currency.getBalance;
-  transactionGetPrice = Currency.getPrice;
-
   wallet: Wallet = new Wallet('', '', '', '', '', 0, CurrencyType.EUR, false);
   loadedWallet: Wallet = new Wallet('', '', '', '', '', 0, CurrencyType.EUR, false);
   isEdit: boolean = false;

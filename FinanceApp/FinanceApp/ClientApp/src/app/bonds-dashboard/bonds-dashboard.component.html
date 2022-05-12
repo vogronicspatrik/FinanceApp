@@ -7,7 +7,10 @@
       <div *ngFor="let item of summary" class="col-12 col-md-6 my-2 px-2 border-y border-bottom-dark">
         <h5>{{'Total yield per interval in'|translate}} {{item.currency}}:</h5>
         <div class="text-end" *ngFor="let interval of item.intervals">
-          <div class="m-0"><span class="h5 text-success">{{displayValueWithCurrency(interval.summary, item.currency)}}</span>
+          <div class="m-0">
+            <span class="h5 text-success">
+              <app-value-with-currency [value]="interval.summary" [currency]="item.currency"></app-value-with-currency>
+            </span>
             / {{interval.interval | returnIntervalDisplay | translate}}</div>
         </div>
       </div>

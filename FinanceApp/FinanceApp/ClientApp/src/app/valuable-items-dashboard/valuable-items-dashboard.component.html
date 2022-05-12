@@ -11,7 +11,9 @@
             <h6>{{'Without Amortization'|translate}}:</h6>
           </div>
           <div class="text-end col-auto">
-            <h5>{{displayValueWithCurrency(item.withoutAmortization, item.currency)}}
+            <h5>
+              <app-value-with-currency [value]="item.withoutAmortization"
+                                       [currency]="item.currency"></app-value-with-currency>
             </h5>
           </div>
         </div>
@@ -20,7 +22,9 @@
             <h6>{{'With Amortization'|translate}}:</h6>
           </div>
           <div class="text-end col-auto">
-            <h5>{{displayValueWithCurrency(item.withAmortization, item.currency)}}
+            <h5>
+              <app-value-with-currency [value]="item.withAmortization"
+                                       [currency]="item.currency"></app-value-with-currency>
             </h5>
           </div>
         </div>
@@ -29,7 +33,9 @@
             <h6>{{'Difference'|translate}}:</h6>
           </div>
           <div class="text-end col-auto">
-            <h5>{{displayValueWithCurrency(item.withoutAmortization - item.withAmortization, item.currency)}}
+            <h5>
+              <app-value-with-currency [value]="item.withoutAmortization - item.withAmortization"
+                                       [currency]="item.currency"></app-value-with-currency>
             </h5>
           </div>
         </div>

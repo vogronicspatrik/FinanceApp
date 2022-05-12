@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {BondService} from "../services/bond.service";
 import {Bond, BondReturnInterval} from "../models/Bond";
-import {Currency, CurrencyType} from "../models/Currency";
+import {CurrencyType} from "../models/Currency";
 
 @Component({
   selector: 'app-bonds-dashboard',
@@ -9,11 +9,8 @@ import {Currency, CurrencyType} from "../models/Currency";
   styleUrls: ['./bonds-dashboard.component.css']
 })
 export class BondsDashboardComponent implements OnInit {
-
   bonds: Bond[] = [];
   summary: { currency: CurrencyType; intervals: { interval: BondReturnInterval, summary: number }[] }[] = [];
-
-  displayValueWithCurrency = Currency.getCurrency;
 
   constructor(private bondService: BondService) {
   }
